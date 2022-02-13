@@ -1,0 +1,9 @@
+"""
+windows dont really need a base class,
+ the 'boiler plate' would be mostly just
+     wintitle = "Image Window"
+    DISPLAY_SIGNALS = (True, True)
+    handle_callbacks = []
+and overriding a show() method with a destroy_loop() if neccesary for cleaning up nested components.
+
+"""
