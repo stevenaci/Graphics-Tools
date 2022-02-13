@@ -74,8 +74,8 @@ class CreateWindow():
         if self.btn_combine:
             self.on_combine_imgs = self.on_combine_masks()
 
-        self.btn_combine = imgui.button("Combine Masks")
-        if self.btn_combine:
+        self.btn_masks = imgui.button("Combine Masks")
+        if self.btn_masks:
             self.on_combine_masks = self.on_combine_masks()
 
         imgui.end()
