@@ -1,5 +1,5 @@
 import imgui
-from tools.art.cv_img import CV_IMG
+from tools.art.cv_img import CVImg
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 from tools.art.Combining import combine_images, combine_images_from_paths
@@ -30,10 +30,10 @@ class CreateWindow():
         if self.masker.run():
             
             result = combine_images(
-                self.drawPlane.dim, 
-                self.masker.get_mask_imgs()
+                self.masker.img.data, 
+                [self.masker.get_mask_data()]
             )
-            CV_IMG.save_imgrid(
+            CVImg.save_imgrid(
                 result, 
                 "./output/" + "mask_" + self.masker.img.filename + ".png"
             )
@@ -44,7 +44,7 @@ class CreateWindow():
         result = combine_images_from_paths(
             self.drawPlane.dim, paths
         )
-        CV_IMG.save_imgrid(
+        CVImg.save_imgrid(
             result, 
             "./output/" + self.output_name + ".png"
         )
@@ -72,11 +72,11 @@ class CreateWindow():
         # COMBINE BTN
         self.btn_combine = imgui.button("Combine Images")
         if self.btn_combine:
-            self.on_combine_imgs = self.on_combine_masks()
+            self.on_combine_imgs()
 
         self.btn_masks = imgui.button("Combine Masks")
         if self.btn_masks:
-            self.on_combine_masks = self.on_combine_masks()
+            self.on_combine_masks()
 
         imgui.end()
         return True

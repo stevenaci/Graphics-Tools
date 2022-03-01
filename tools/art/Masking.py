@@ -1,7 +1,7 @@
 from ast import Raise
 import cv2 as cv
 import numpy as np
-from tools.art.cv_img import HSV_IMG, CV_IMG
+from tools.art.cv_img import HSVImg, CVImg
 from tools.art.hsvcolors import HSVColor, HSVColorange
 
 class Mask:
@@ -20,15 +20,25 @@ class Mask:
 class ImageMasker:
 
 	masks = []
-	color_ranges = []
+	color_ranges: list[HSVColorange] = []
+	colors: list[HSVColor] = []
 
 	def __init__(self):
-		self.img = HSV_IMG()
+		self.img = HSVImg()
+		self.color_ranges = []
+		self.colors = []
 
-	def create_color_ranges(self, colors: list[HSVColor]):
+	def run(self)-> list:
+		self.create_color_ranges()
+		self.create_color_masks()
+
+		# self.save_masks()
+		return True
+
+	def create_color_ranges(self):
 		# Creates a new color range for each color
 		self.color_ranges = []
-		for c in colors:
+		for c in self.colors:
 			self.color_ranges.append(HSVColorange(c))
 
 	def create_color_masks(self):
@@ -42,21 +52,14 @@ class ImageMasker:
 			)
 			self.masks.append(Mask(self.img.data, colorange))
 
-	def run(self, hsv_colors: list[HSVColor])-> list:
-		self.create_color_ranges(hsv_colors)
-		self.create_color_masks()
-
-		# self.save_masks()
-		return True
-
-	def get_mask_imgs(self)-> list:
+	def get_mask_data(self)-> list:
 		# get the hsv color mask data 
 		return [m.data for m in self.masks]
 
 	def save_masks(self)->bool:
 
 		for i, mask in enumerate(self.masks):
-			CV_IMG.save_imgrid(
+			CVImg.save_imgrid(
 				mask.res,
 				"{}{}.jpg".format(
 					self.img.filename,

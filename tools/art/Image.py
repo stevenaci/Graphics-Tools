@@ -66,4 +66,3 @@ class ImageData: # An Image, loaded as a gl texture, able to be rendered in imgu
             return imgui.image_button(self.texture,self.w, self.h, border_color=(1,1,1,1))
 
         return False
-

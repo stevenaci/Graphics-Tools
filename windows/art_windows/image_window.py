@@ -1,5 +1,5 @@
 import imgui
-import tools.art._imageutil as iu
+import tools.art.Image as iu
 from tools.misc.update import Update 
 """
 Window that displays an image

@@ -18,5 +18,3 @@ class DrawPlane():
 
     def display(self):
         pass
-
-

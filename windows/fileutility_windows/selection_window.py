@@ -1,5 +1,5 @@
 import imgui
-from tools.art._imageutil import ImageData
+from tools.art.Image import ImageData
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow, ImageList
 
