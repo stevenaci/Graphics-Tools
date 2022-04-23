@@ -1,21 +1,6 @@
-from ast import Raise
-import cv2 as cv
-import numpy as np
-from tools.art.cv_img import HSVImg, CVImg
-from tools.art.hsvcolors import HSVColor, HSVColorange
-
-class Mask:
-	data:np.array = 0
-	res:np.array = 0
-
-	def __init__(self, img, hsv_range):
-		self.create_mask(img, hsv_range)
-
-	def create_mask(self, img, r):
-		hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
-		self.data = cv.inRange(hsv, r.low, r.hi)
-		self.res = cv.bitwise_and(img,img, mask=self.data)
-
+from tools.art.cv_img import CVImg
+from tools.art.colors.colors import HSVColor, HSVColorange
+from tools.art.Masking.mask import Mask
 
 class ImageMasker:
 
@@ -24,7 +9,7 @@ class ImageMasker:
 	colors: list[HSVColor] = []
 
 	def __init__(self):
-		self.img = HSVImg()
+		self.img = CVImg()
 		self.color_ranges = []
 		self.colors = []
 
@@ -59,10 +44,9 @@ class ImageMasker:
 	def save_masks(self)->bool:
 
 		for i, mask in enumerate(self.masks):
-			CVImg.save_imgrid(
+			CVImg.save(
 				mask.res,
 				"{}{}.jpg".format(
 					self.img.filename,
 					str(i)
-				)
-			)
+				))

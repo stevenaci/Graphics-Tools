@@ -2,11 +2,13 @@ import numpy as np
 import cv2 as cv
 import os
 import imgui
-from typing import List
 
 
-class HSVImg():
+class CVImg():
+	"""
+	CVImg: An image loaded as a pixel grid for manipulation!
 
+	"""
 
 	def __init__(self, fn: str=""):
 		self.load = False
@@ -16,25 +18,23 @@ class HSVImg():
 		if fn is not "":
 			self.data = CVImg.load_file(fn)
 			self.load = True
+			self.w = self.data.shape[0]
+			self.h = self.data.shape[1]
 
 	def get_pixel(self, xy: imgui.Vec2):
 		if self.load:
-			w = self.data.shape[0]
-			h = self.data.shape[1]
+
 			x = int(xy.x)
 			y = int(xy.y)
 			pix = [0, 0, 0]
-			if x < w and y < h:
+			if x < self.w and y < self.h:
 				pix = self.data[x, y]
 			return pix
+
 	def display(self):
 		if self.load:
-			pass # not here yet
-			#imgui.image(self.data, height=150, title="flowers")
-			#imgui.text_ansi_colored("test")
-
-class CVImg():
-
+			pass
+			# imgui.image_button(self.data,0, 0, border_color=(1,1,1,1))
 
 	def create_blank_image(w, h):
 			# creates a blank drawable surface for opencv
@@ -56,7 +56,7 @@ class CVImg():
 
 		return img
 
-	def save_imgrid(grid: np.array, fn) -> bool:
+	def save(grid: np.array, fn: str) -> bool:
 		cv.imwrite(fn, grid)
 		print("Saved {}".format(fn))
 
@@ -66,7 +66,12 @@ class CVImg():
 	def resize_image(grid: np.array, dim: imgui.Vec2) -> np.array:
 			return cv.resize(grid, (dim.y, dim.x), interpolation=cv.INTER_NEAREST)
 	
-	def copy_pixels_to_canvas(canvas: np.array, img: np.array):
+	def copy_pixels_to_canvas(
+		canvas: np.array, img: np.array
+	):
+		"""
+			copy one np array (cvimg) onto another	
+		"""
 		yi = 0
 		xi = 0
 
@@ -74,7 +79,8 @@ class CVImg():
 		xmax = canvas.shape[0]
 		for y in range(ymax):
 			for x in range(xmax):
-				canvas[xi][yi][:] = CVImg.add_pixels(canvas[xi][yi][:], img[xi][yi][:])
+				canvas[xi][yi][:] = CVImg.add_pixels_alpha(
+					canvas[xi][yi][:], img[xi][yi][:])
 				xi += 1
 			yi += 1
 			xi = 0
@@ -98,7 +104,10 @@ class CVImg():
 	def weight_add(a, b, bw):
 		return (float(a)  * (1.0 - bw)) + float(b) * bw
 
-	def add_pixels(a, b):
+	def add_pixels_alpha(a, b):
+		"""
+			add pixels that have alpha channels.
+		"""
 		b_alpha = float(b[3])
 		alpha_2 = b_alpha / 255.0
 
@@ -108,17 +117,3 @@ class CVImg():
 		a[3] = CVImg.weight_add(a[3], b[3], alpha_2)
 
 		return CVImg.clamp_pixel(a) # clamp to png values
-
-	def combine_images(canvas: imgui.Vec2, paths: List[str]):
-
-		surface = CVImg.create_blank_image(canvas.x, canvas.y)
-
-		for p in paths:
-			img = CVImg.load_any(p)
-			if not img.any(): # If image load fails, just return
-				return
-				
-			img = CVImg.resize_image(img, canvas)
-			surface = CVImg.copy_pixels_to_canvas(surface, img)
-
-		return surface

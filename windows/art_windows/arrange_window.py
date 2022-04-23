@@ -71,7 +71,7 @@ class ArrangeWindow():
         if self.save_lists:
             self.save()
         for b in self.img_lists:
-            if b.show() == ImageList.ILIST_DEL:
+            if b.show() == ImageList.SIG_DEL:
                 self.del_img_lists.append(b) # 
 
     def load(self):

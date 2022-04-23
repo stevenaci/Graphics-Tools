@@ -1,7 +1,7 @@
 import imgui
-from tools.art.cv_img import HSVImg
-from tools.art.hsvcolors import HSVColor
-from tools.art.Masking import ImageMasker
+from tools.art.cv_img import CVImg
+from tools.art.colors.colors import HSVColor
+from tools.art.Masking.masker import ImageMasker
 from tools.filemanagement.savedata import global_sessiondata
 from tools.misc.update import Update
 
@@ -22,7 +22,7 @@ class MaskWindow(Update):
     img_path: str
     masks = []
     image_win: ImageWindow
-    hsv_img: HSVImg
+    hsv_img: CVImg
     select_color: HSVColor
     masker: ImageMasker
     btn_add_color = False
@@ -30,7 +30,7 @@ class MaskWindow(Update):
     selecting = False
 
     def __init__(self, im_win: ImageWindow, masker: ImageMasker):
-        self.hsv_img = HSVImg()
+        self.hsv_img = CVImg()
         self.masker = ImageMasker()
         self.image_win = im_win
 
@@ -38,17 +38,12 @@ class MaskWindow(Update):
 
     def update(self):
         if self.image_win.img:
-            self.hsv_img = HSVImg(self.image_win.img.path)
+            self.hsv_img = CVImg(self.image_win.img.path)
 
     def select_pixel(self):
 
         if self.hsv_img.load:
             xy = imgui.get_mouse_pos()
-
-            # xy = imgui.Vec2(
-            #     xy.x - self.image_win.img_pos.x,
-            #     xy.y - self.image_win.img_pos.y
-            # )
 
             self.select_color = HSVColor(
                 self.hsv_img.get_pixel(xy)

@@ -2,9 +2,9 @@ import imgui
 from tools.art.cv_img import CVImg
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow
-from tools.art.Combining import combine_images, combine_images_from_paths
+from tools.art.Combining.combine import combine_images, combine_images_from_paths
 from tools.art.drawplane import DrawPlane
-from tools.art.Masking import ImageMasker
+from tools.art.Masking.masker import ImageMasker
 
 class CreateWindow():
     label = "Create window"
@@ -33,8 +33,8 @@ class CreateWindow():
                 self.masker.img.data, 
                 [self.masker.get_mask_data()]
             )
-            CVImg.save_imgrid(
-                result, 
+            CVImg.save(
+                result,
                 "./output/" + "mask_" + self.masker.img.filename + ".png"
             )
 
@@ -44,7 +44,7 @@ class CreateWindow():
         result = combine_images_from_paths(
             self.drawPlane.dim, paths
         )
-        CVImg.save_imgrid(
+        CVImg.save(
             result, 
             "./output/" + self.output_name + ".png"
         )

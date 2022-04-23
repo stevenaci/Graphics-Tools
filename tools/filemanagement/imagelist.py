@@ -2,15 +2,20 @@ import imgui
 from tools.art.Image import ImageData
 from random import choice
 
-
-# The image list and its placement in the arrange window
 class ImageList():
+    """
+        a LIST of image files basically,
+        with some interesting features.
+        - Create labelled lists out of urls,
+        - Return a random image
+        - Retain a size for all images in the list
+    """
     imgs = None
     label = ""
     x = 0
     y = 0
     
-    ILIST_DEL = 1
+    SIG_DEL = 1
     def __init__(self,label, urls:list):
 
         self.label = label
@@ -89,7 +94,7 @@ class ImageList():
 
         if expanded:
 
-            # # POSITION
+            # # POSITIONING IMAGES
             # c,x = imgui.slider_int(
             #     "X##"+ self.label, self.x,
             #     min_value=0, max_value=self.drawPlane.dim.x
@@ -119,11 +124,11 @@ class ImageList():
 
             for id, path in self.imgs.items():
                 imgui.text(path.path)
-                del_img = imgui.button("remove")
+                del_img = imgui.COLOR_BUTTON()
                 if del_img:
                     self.del_imgs.append(id)
             del_list = imgui.button("Erase List.")
             if del_list:
-                _SIG = self.ILIST_DEL
+                _SIG = self.SIG_DEL
 
         return _SIG

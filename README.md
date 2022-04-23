@@ -13,7 +13,7 @@
 
 ### 2D graphics:
 - combine .png images with/without transparency
-- colorpicker and creating color masks from image
+- colorpicker and creating color masks from images
 - Feature Detection (OpenCV Sift)
 
 ### 3D graphics:

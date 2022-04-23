@@ -19,10 +19,3 @@ def combine_images(canvas: Vec2, cv_imgs: list):
 		surface = CVImg.copy_pixels_to_canvas(surface, pix)
 
 	return surface
-
-
-def test():
-		img = CVImg.create_blank_image(600, 400)
-		img = CVImg.resize_image(img, Vec2(400, 300))
-		CVImg.save_array_img(img, "testimg.png")
-		print(img.shape[0])

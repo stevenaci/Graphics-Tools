@@ -33,7 +33,7 @@ class FolderItem():
 # A folder representation
 class FolderData():
     path = None
-    contents = {} # FolderItems
+    contents = dict[str, FolderItem] # FolderItems
 
     def __init__(self, path:str) -> None:
         self.path = path

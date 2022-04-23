@@ -3,7 +3,7 @@ from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
 from windows.art_windows.image_window import ImageWindow
 from Program import Program
 from windows.art_windows.masking_window import MaskWindow
-from tools.art.Masking import ImageMasker
+from tools.art.Masking.masker import ImageMasker
 from windows.art_windows.create_window import CreateWindow
 
 class PrintWindows:
