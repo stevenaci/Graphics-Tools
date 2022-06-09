@@ -61,6 +61,14 @@ class MaskWindow(Update):
         global_sessiondata.update_data("mask_colors", self.masker.colors)
         self.masker.run()
 
+    def quant_masks(self):
+        img, colors = self.hsv_img.color_quantize(11)
+        for c in colors.values():
+            self.masker.colors.append(
+                HSVColor(c)
+            )
+        self.gen_masks()
+
     def show(self):
         imgui.begin(self.name)
         _, self.hsv_input = imgui.input_int3('HSV', *self.hsv_input)
@@ -81,6 +89,12 @@ class MaskWindow(Update):
         self.btn_gen_masks = imgui.button("Gen Masks")
         if self.btn_gen_masks:
             self.gen_masks()
-
+        self.btn_save_masks = imgui.button("Save Masks")
+        if self.btn_save_masks:
+            self.masker.save_masks()
+        # Separate components.
+        self.btn_color_quant = imgui.button("Color Quantize Mask")
+        if self.btn_color_quant:
+            self.quant_masks()
         imgui.end()
         return

@@ -3,7 +3,13 @@ from tools.art.colors.colors import HSVColor, HSVColorange
 from tools.art.Masking.mask import Mask
 
 class ImageMasker:
-
+	"""
+		- Load the image masker with colors to be
+		masked. 
+		- Run the masker to generate a color range and mask it out.
+			-- See HSVColorange for ways to configure threshold etc.
+	
+	"""
 	masks = []
 	color_ranges: list[HSVColorange] = []
 	colors: list[HSVColor] = []
@@ -17,7 +23,7 @@ class ImageMasker:
 		self.create_color_ranges()
 		self.create_color_masks()
 
-		# self.save_masks()
+		# 
 		return True
 
 	def create_color_ranges(self):

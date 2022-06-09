@@ -4,7 +4,7 @@ import numpy as np
 class HSVColor:
 
     def __init__(self, hsv: list[int]) -> None:
-        if len(list) < 3:
+        if len(hsv) < 3:
             raise f"Invalid HSV values{hsv}"
         self.color = hsv
         pass
@@ -29,10 +29,14 @@ class HSVColorange:
     # Setting this higher extends the lower bound for the
     # saturation and value. If your image is noisy or low-quality this
     # may result in a smoother mask.
+    h_pass = 5
     s_pass = 5
     v_pass = 5
 
     def __init__(self, hsv: HSVColor):
         c = np.array(hsv.color)
-        self.low = np.array([c[0]-10, c[1] - self.s_pass, c[2] - self.v_pass])
-        self.hi = np.array([c[0]+10, 255, 255])
+        self.low = np.array(
+            [c[0]- self.h_pass,
+            c[1] - self.s_pass,
+            c[2] - self.v_pass])
+        self.hi = np.array([c[0]+self.h_pass, 255, 255])

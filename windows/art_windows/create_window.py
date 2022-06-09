@@ -12,7 +12,7 @@ class CreateWindow():
     out_sz = 300, 300 # size of combine output
     output_name = "TEST"
 
-    on_combine_masks = None
+    combine_masks = None
     masker: ImageMasker
 
     def __init__(self, aw:ArrangeWindow=None, iw: ImageWindow=None, masker: ImageMasker=None):
@@ -22,11 +22,9 @@ class CreateWindow():
         self.btn_combine = False
         self.btn_masks = False
 
-        self.drawPlane = DrawPlane(
-            (int(self.out_sz[0]), int(self.out_sz[1]))
-        )
+        self.drawPlane = DrawPlane((int(self.out_sz[0]), int(self.out_sz[1])))
 
-    def on_combine_masks(self):
+    def combine_masks(self):
         if self.masker.run():
             
             result = combine_images(
@@ -38,7 +36,7 @@ class CreateWindow():
                 "./output/" + "mask_" + self.masker.img.filename + ".png"
             )
 
-    def on_combine_imgs(self):
+    def combine_imgs(self):
         #
         paths = self.aw.gen_random_imgs() # the path for each image
         result = combine_images_from_paths(
@@ -72,11 +70,11 @@ class CreateWindow():
         # COMBINE BTN
         self.btn_combine = imgui.button("Combine Images")
         if self.btn_combine:
-            self.on_combine_imgs()
+            self.combine_imgs()
 
         self.btn_masks = imgui.button("Combine Masks")
         if self.btn_masks:
-            self.on_combine_masks()
+            self.combine_masks()
 
         imgui.end()
         return True

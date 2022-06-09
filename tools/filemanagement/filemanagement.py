@@ -50,7 +50,6 @@ class FolderData():
 
         self.scanned = True
 
-
     def show(self):
         for k, v in self.contents.items():
             if v.show():

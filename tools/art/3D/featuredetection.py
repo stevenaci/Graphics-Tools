@@ -23,9 +23,11 @@ class FeatureField():
 
 
     def generate(self, fn: str):
-        #todo: generate shapes with faces
+
         vertices = self.sift_verts(fn)
+
         new_mesh = self.generate_mesh(vertices)
+
         print("Saving a mesh ")
         # Write the mesh to file "cube.stl"
         new_mesh.save(fn + '.stl')
@@ -49,17 +51,15 @@ class FeatureField():
         # add keypoints as vertices
         for i, k in enumerate(kp):
             verts[i] = [
-                k.pt[0] / SCALE ,
-                k.pt[1] / SCALE,
-                i / SCALE]
+                k.pt[0] / SCALE, k.pt[1] / SCALE, i / SCALE]
         return verts
 
     def generate_faces(self, verts=[]):
         #
         faces = []
-        for v in range(0, self.vertices.shape[0], 3):
-            faces.append(
-                [v, v+1, v+2] # Next 3 vertices into face
+        for v in range(0, self.vertices.shape[0]-2, 3):
+            faces.append( # Next 3 vertices into face
+                [v, v+1, v+2] 
             )
         return faces
 
@@ -72,11 +72,7 @@ class FeatureField():
         
         kp, des = sift.detectAndCompute(gray,None)
         img = cv.drawKeypoints(gray, kp, img)
-        cv.imwrite(
-            str(
-                datetime.now().timestamp()
-            ) + '.jpg',
-            img)
+
         return kp
 
 class DepthField:
@@ -84,6 +80,3 @@ class DepthField:
     @staticmethod
     def generate(fname):
         pass
-
-#features = FeatureField()
-#keypoints = features.sift_keypoints('m.jpg')

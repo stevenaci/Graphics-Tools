@@ -1,14 +1,17 @@
-import numpy as np
 import cv2 as cv
+import numpy as np
 import os
 import imgui
+import pygame
+from tools.art.colors.quantization import Quantization
+from tools.math import clamp
 
-
-class CVImg():
+class CVImg(Quantization):
 	"""
 	CVImg: An image loaded as a pixel grid for manipulation!
 
 	"""
+	data: np.array
 
 	def __init__(self, fn: str=""):
 		self.load = False
@@ -31,71 +34,74 @@ class CVImg():
 				pix = self.data[x, y]
 			return pix
 
+	def select_pixel(self, img, xy: tuple):
+		return img[xy[0],xy[1]]
+
 	def display(self):
 		if self.load:
 			pass
 			# imgui.image_button(self.data,0, 0, border_color=(1,1,1,1))
 
-	def create_blank_image(w, h):
+	def create_blank_image(w, h, alpha=True):
 			# creates a blank drawable surface for opencv
+			# any 3 int color format -> 255,255,255
 			# alpha
-			return np.zeros((w, h, 4), np.uint8)
+			if alpha:
+				return np.zeros((w, h, 4), np.uint8)
+			return np.zeros((w, h, 3), np.uint8)
 			# no alpha
 			#
 
+	def load_surface(surface: pygame.Surface):
+		""" Load a surface as a pixel array, mutable in the same way as a cv image"""
+		return pygame.PixelArray(surface)
+
 	def load_file(fname: str):
-			# loads an image in opencv
+		# loads an image in opencv
 		img = cv.imread(os.path.abspath(fname), cv.IMREAD_UNCHANGED)
 		if img is None:
 			print("Couldnt read img : {}".format(fname))
 
 		if len(img[0][0]) < 4:
-			print("PNG HAS NO TRANSPARENCY : {}".format(fname))
-			print("Top left pixel : {}".format(img[0][0]))
-			return img
-
+			print("PNG HAS NO TRANSPARENCY : {}\n appending max alpha".format(fname))
+			img = np.insert(img, 3, 255, axis=2)
+			print(img[0])
 		return img
+
 
 	def save(grid: np.array, fn: str) -> bool:
 		cv.imwrite(fn, grid)
-		print("Saved {}".format(fn))
+		print(f"Saved {fn}")
 
-	def select_pixel(self, img, xy: tuple):
-		return img[xy[0],xy[1]]
-	
 	def resize_image(grid: np.array, dim: imgui.Vec2) -> np.array:
 			return cv.resize(grid, (dim.y, dim.x), interpolation=cv.INTER_NEAREST)
 	
-	def copy_pixels_to_canvas(
-		canvas: np.array, img: np.array
-	):
+	def blit(dst: np.array, src: np.array, origin = (0,0)):
 		"""
-			copy one np array (cvimg) onto another	
+			Copy one np array onto another
 		"""
-		yi = 0
+		yi = 0 
 		xi = 0
 
-		ymax = canvas.shape[1]
-		xmax = canvas.shape[0]
+		ymax = dst.shape[1]-origin[1]
+		xmax = dst.shape[0]-origin[0]
 		for y in range(ymax):
 			for x in range(xmax):
-				canvas[xi][yi][:] = CVImg.add_pixels_alpha(
-					canvas[xi][yi][:], img[xi][yi][:])
+				dst[xi+origin[0]][yi+origin[1]][:] = CVImg.add_pixels_alpha(
+					dst[xi+origin[0]][yi+origin[1]][:],
+					src[xi][yi][:])
 				xi += 1
 			yi += 1
 			xi = 0
 	
-		return canvas
+		return dst
 
-	def clamp(num, min_value, max_value):
-			return max(min(num, max_value), min_value)
-
-	def clamp_pixel(pix: np.array):
+	def clamp_pixel(pix: np.array): # clamp to 8 bit
 		try:
-			pix[0] = int(CVImg.clamp(pix[0], 0, 255))
-			pix[1] = int(CVImg.clamp(pix[1], 0, 255))
-			pix[2] = int(CVImg.clamp(pix[2], 0, 255))
-			pix[3] = int(CVImg.clamp(pix[3], 0, 255))
+			pix[0] = int(clamp(pix[0], 0, 255))
+			pix[1] = int(clamp(pix[1], 0, 255))
+			pix[2] = int(clamp(pix[2], 0, 255))
+			pix[3] = int(clamp(pix[3], 0, 255))
 
 		except:
 			print("PIXEL CLAMP ERROR:", str(pix))

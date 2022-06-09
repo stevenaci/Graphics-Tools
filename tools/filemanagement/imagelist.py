@@ -10,7 +10,7 @@ class ImageList():
         - Return a random image
         - Retain a size for all images in the list
     """
-    imgs = None
+    imgs = dict[int, ImageData]
     label = ""
     x = 0
     y = 0
@@ -124,7 +124,7 @@ class ImageList():
 
             for id, path in self.imgs.items():
                 imgui.text(path.path)
-                del_img = imgui.COLOR_BUTTON()
+                del_img = imgui.button("remove image")
                 if del_img:
                     self.del_imgs.append(id)
             del_list = imgui.button("Erase List.")

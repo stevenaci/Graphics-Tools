@@ -5,7 +5,7 @@ from tools.filemanagement.imagelist import ImageList
 
 class ArrangeWindow():
     name = "Image Lists"
-    img_lists = [] #
+    img_lists = list[ImageList] #
     new_list_name = ""
 
     del_img_lists = [] # to destroy on next cycle
@@ -16,7 +16,7 @@ class ArrangeWindow():
     
     def __init__(self):
         self.pos = imgui.Vec2(770, 10)
-
+        self.img_lists: list[ImageList]= [] #
         self.load()
         pass
 
