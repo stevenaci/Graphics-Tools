@@ -61,8 +61,3 @@ class Quantization():
         #image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
 
         return quant, colors
-
-    # display the images and wait for a keypress
-    #cv2.imshow("image", np.hstack([quant]))
-    #cv2.imwrite("out.jpeg",quant)
-    #cv2.waitKey(0)

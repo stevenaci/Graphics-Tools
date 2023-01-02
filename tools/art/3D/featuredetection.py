@@ -1,6 +1,5 @@
 import numpy as np
 import cv2 as cv
-from datetime import datetime
 from stl import mesh
 
 def timed_(f):
@@ -29,7 +28,6 @@ class FeatureField():
         new_mesh = self.generate_mesh(vertices)
 
         print("Saving a mesh ")
-        # Write the mesh to file "cube.stl"
         new_mesh.save(fn + '.stl')
 
     def generate_mesh(self, verts)-> np.array:

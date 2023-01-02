@@ -42,9 +42,10 @@ class FolderManagerWindow():
 
         if path not in self.folderdata.keys():
             self.folderdata[path] = FolderData(path)
-
+        else:
+            self.folderdata[path].scan()
         self.selection.set_folder(self.folderdata[path])
-        print("focus_folder " + self.selection.folder.path)
+        print(f"focus_folder {self.selection.folder.path}")
 
     def handle_toolbar(self, signal:int=None):
         if signal is not None:
@@ -56,9 +57,9 @@ class FolderManagerWindow():
 
     def handle_folder(self, signal:FolderItem=None):
         if signal is not None:
-            if signal.isdir:
+            if signal.is_dir:
                 self.focus_folder(signal.path)
-            if signal.isfile and signal.isimg:
+            if signal.is_file and signal.is_img:
                 self.image_win.replace_image(signal.path)
 
     def show(self):

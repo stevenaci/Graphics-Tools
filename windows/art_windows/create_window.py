@@ -39,12 +39,9 @@ class CreateWindow():
     def combine_imgs(self):
         #
         paths = self.aw.gen_random_imgs() # the path for each image
-        result = combine_images_from_paths(
-            self.drawPlane.dim, paths
-        )
+        result = combine_images_from_paths(self.drawPlane.dim, paths)
         CVImg.save(
-            result, 
-            "./output/" + self.output_name + ".png"
+            result, f"./output/{self.output_name}.png"
         )
 
     def show(self):

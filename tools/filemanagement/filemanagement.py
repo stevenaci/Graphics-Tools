@@ -1,30 +1,31 @@
+from xml.sax.handler import property_declaration_handler
 import imgui
 import os
 
 DIR_ITEM_ENTER = 1
 
-# File seletion
-class Selection(): 
-    def __init__(self) -> None:
-        pass
-    def set_folder(self, f):
-        self.folder = f
-    def set_file(self, f):
-        self.file = f
-
 # An Item in the file system
 class FolderItem():
-    path = None
-    entry = None # os.DirEntry
-    selected = False # gui 
+    path: str = None
+    entry: os.DirEntry = None
+    selected: bool = False # gui 
 
     def __init__(self, entry: os.DirEntry) -> None:
         self.entry = entry
-        self.isdir = entry.is_dir()
-        self.isfile = entry.is_file()
-        self.isimg = True if entry.path.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')) else False
         self.path = entry.path
         pass
+
+    @property
+    def is_dir(self):
+        return self.entry.is_dir()
+
+    @property
+    def is_file(self):
+        return self.entry.is_file()
+    
+    @property
+    def is_img(self):
+        return True if self.entry.path.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')) else False
 
     def show(self) -> int:
         if imgui.selectable(self.entry.name)[1]:
@@ -54,3 +55,11 @@ class FolderData():
         for k, v in self.contents.items():
             if v.show():
                 return v
+
+# File seletion
+class Selection():
+    folder: FolderData
+    def __init__(self) -> None:
+        pass
+    def set_folder(self, f: FolderData):
+        self.folder = f

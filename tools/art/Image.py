@@ -22,7 +22,11 @@ def load_image(image_name='test.png') -> tuple[pygame.Surface,int,int]:
     return texture_id, width, height, surface
 
 
-class ImageData: # An Image, loaded as a gl texture, able to be rendered in imgui with show()
+class ImageData:
+    """
+    # An Image, loaded as a gl texture, able to be rendered in imgui with show()
+    # 
+    # """
 
     texture: int
     surface: pygame.Surface
@@ -31,7 +35,7 @@ class ImageData: # An Image, loaded as a gl texture, able to be rendered in imgu
 
     def __init__(self, path):
         global img_ID_counter
-        img_ID_counter += 1
+        ImageData.img_ID_counter += 1
         self.imgID = ImageData.img_ID_counter
 
         self.new_img(path)
