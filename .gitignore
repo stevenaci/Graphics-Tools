@@ -6,3 +6,4 @@ dist/
 */pycache/
 *cpython
 *.pyc
+savedata/
