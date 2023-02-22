@@ -20,15 +20,17 @@ class HSVColor:
     
 
 class HSVColorange:
-    # HSV is a method for expressing a color in 3 numbers,
-    # each representing the Hue, Saturation, and Value respectively.
-    # This generates a range that can be used to create a value mask.
-    low: np.array
-    hi: np.array
-    # Saturation/Value pass:
-    # Setting this higher extends the lower bound for the
-    # saturation and value. If your image is noisy or low-quality this
-    # may result in a smoother mask.
+
+    """    HSV is a method for expressing a color in 3 numbers,
+        each representing the Hue, Saturation, and Value respectively.
+        This generates a range that can be used to create a value mask."""
+    low: np.array = None
+    hi: np.array = None
+
+    """    Saturation/Value pass:
+        Setting this higher extends the lower bound for the
+        saturation and value. If your image is noisy or low-quality this
+        may result in a smoother mask."""
     h_pass = 5
     s_pass = 5
     v_pass = 5

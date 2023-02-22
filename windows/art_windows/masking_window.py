@@ -1,15 +1,15 @@
 import imgui
-from tools.art.cv_img import CVImg
+from tools.art.image import _Img
 from tools.art.colors.colors import HSVColor
 from tools.art.Masking.masker import ImageMasker
 from tools.filemanagement.savedata import global_sessiondata
-from tools.misc.update import Update
+from tools.misc.update import Lazy
 
 from windows.art_windows.image_window import ImageWindow
 
 
 
-class MaskWindow(Update):
+class MaskWindow(Lazy):
     """
     Window with masking functionality
     Inputs
@@ -18,11 +18,11 @@ class MaskWindow(Update):
     - outputs a mask of that color range, able to be saved.
     """
 
-    name = "Mask Window"
+    label = "Mask Window"
     img_path: str
     masks = []
     image_win: ImageWindow
-    hsv_img: CVImg
+    hsv_img: _Img
     select_color: HSVColor
     masker: ImageMasker
     btn_add_color = False
@@ -30,7 +30,7 @@ class MaskWindow(Update):
     selecting = False
 
     def __init__(self, im_win: ImageWindow, masker: ImageMasker):
-        self.hsv_img = CVImg()
+        self.hsv_img = _Img()
         self.masker = ImageMasker()
         self.image_win = im_win
 
@@ -38,7 +38,7 @@ class MaskWindow(Update):
 
     def update(self):
         if self.image_win.img:
-            self.hsv_img = CVImg(self.image_win.img.path)
+            self.hsv_img = _Img(self.image_win.img.path)
 
     def select_pixel(self):
 
@@ -70,7 +70,7 @@ class MaskWindow(Update):
         self.gen_masks()
 
     def show(self):
-        imgui.begin(self.name)
+        imgui.begin(self.label)
         _, self.hsv_input = imgui.input_int3('HSV', *self.hsv_input)
 
         self.btn_add_color = imgui.button("Add Colormask")

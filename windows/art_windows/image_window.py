@@ -1,13 +1,13 @@
 import imgui
-import tools.art.Image as iu
-from tools.misc.update import Update 
+import tools.filemanagement.image as iu
+from tools.misc.update import Lazy 
 """
 Window that displays an image
 and has several subscribers
 
 """
-class ImageWindow(Update):
-    name = "Image Window"
+class ImageWindow(Lazy):
+    label = "Image Window"
     img = None
     pos = imgui.Vec2(0,0)
     dim = imgui.Vec2(0,0)
@@ -24,11 +24,8 @@ class ImageWindow(Update):
     def get_image(self):
         return self.img
 
-    def update_subscribers(self):
-        super().update_subscribers()
-
     def show(self):
-        imgui.begin(self.name)
+        imgui.begin(self.label)
         if self.img:
             self.img.show()
 

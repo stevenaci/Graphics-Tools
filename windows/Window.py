@@ -1,10 +1,6 @@
-import imgui
-
 
 class Window():
-
-    def __init__(self) -> None:
-        pass
+    label: str = "DefaultWindow"
 
     def show(self):
         pass

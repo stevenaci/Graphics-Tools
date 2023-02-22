@@ -1,77 +1,121 @@
-import pygame
-import OpenGL.GL as gl
+import cv2 as cv
+import numpy as np
+import os
 import imgui
-import os 
+from tools.art.colors.quantization import Quantization
+from tools.math import clamp
 
-def load_image(image_name='test.png') -> tuple[pygame.Surface,int,int]:
-    surface = pygame.image.load(os.path.abspath(image_name))
-    textureSurface = pygame.transform.flip(surface, False, True)
+class _Img(Quantization):
+	"""
+	_Img: Image class that combines some libs
 
-    textureData = pygame.image.tostring(textureSurface, "RGBA", 1)
+	"""
+	data: np.array
 
-    width = textureSurface.get_width()
-    height = textureSurface.get_height()
-    texture_id = gl.glGenTextures(1)
-    
-    gl.glBindTexture(gl.GL_TEXTURE_2D, texture_id)
-    gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-    gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
-    gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA,
-                    gl.GL_UNSIGNED_BYTE, textureData)
+	def __init__(self, fn: str=""):
+		self.load = False
+		self.filename = fn.split(".")[:1][0]
+		self.data = None
 
-    return texture_id, width, height, surface
+		if fn is not "":
+			self.data = _Img.load_file(fn)
+			self.load = True
+			self.w = self.data.shape[0]
+			self.h = self.data.shape[1]
+
+	def get_pixel(self, xy: imgui.Vec2):
+		try:
+
+			x = int(xy.x)
+			y = int(xy.y)
+			pix = [0, 0, 0]
+			if x < self.w and y < self.h:
+				pix = self.data[x, y]
+			return pix
+		except:
+			return None
+
+	def select_pixel(self, img, xy: tuple):
+		return img[xy[0],xy[1]]
+
+	def display(self):
+		# imgui.image_button(self.data,0, 0, border_color=(1,1,1,1))
+		pass
+
+	def create_blank_image(w, h, alpha=True):
+			# creates a blank drawable surface for opencv
+			# any 3 int color format -> 255,255,255
+			# alpha
+			if alpha:
+				return np.zeros((w, h, 4), np.uint8)
+			return np.zeros((w, h, 3), np.uint8)
+			# no alpha
+			#
+
+	def load_file(fname: str):
+		# loads an image in opencv
+		img = cv.imread(os.path.abspath(fname), cv.IMREAD_UNCHANGED)
+		if img is None:
+			print("Couldnt read img : {}".format(fname))
+
+		if len(img[0][0]) < 4:
+			print("PNG HAS NO TRANSPARENCY : {}\n appending max alpha".format(fname))
+			img = np.insert(img, 3, 255, axis=2)
+			print(img[0])
+		return img
 
 
-class ImageData:
-    """
-    # An Image, loaded as a gl texture, able to be rendered in imgui with show()
-    # 
-    # """
+	def save(grid: np.array, fn: str) -> bool:
+		cv.imwrite(fn, grid)
+		print(f"Saved {fn}")
 
-    texture: int
-    surface: pygame.Surface
-    img_ID_counter: int = 0000
-    imgID: int
+	def resize_image(grid: np.array, dim: imgui.Vec2) -> np.array:
+			return cv.resize(grid, (dim.y, dim.x), interpolation=cv.INTER_NEAREST)
+	
+	def blit(dst: np.array, src: np.array, origin = (0,0)):
+		"""
+			Copy one np array onto another
+		"""
+		yi = 0 
+		xi = 0
 
-    def __init__(self, path):
-        global img_ID_counter
-        ImageData.img_ID_counter += 1
-        self.imgID = ImageData.img_ID_counter
+		ymax = dst.shape[1]-origin[1]
+		xmax = dst.shape[0]-origin[0]
+		for y in range(ymax):
+			for x in range(xmax):
+				dst[xi+origin[0]][yi+origin[1]][:] = _Img.add_pixels_alpha(
+					dst[xi+origin[0]][yi+origin[1]][:],
+					src[xi][yi][:])
+				xi += 1
+			yi += 1
+			xi = 0
+	
+		return dst
 
-        self.new_img(path)
-        self.loaded = False
-        self.failed = False
+	def clamp_pixel(pix: np.array): # clamp to 8 bit
+		try:
+			pix[0] = int(clamp(pix[0], 0, 255))
+			pix[1] = int(clamp(pix[1], 0, 255))
+			pix[2] = int(clamp(pix[2], 0, 255))
+			pix[3] = int(clamp(pix[3], 0, 255))
 
-    def load(self):
-        try:
-            if not self.loaded:
-                self.texture, self.w, self.h, self.surface = load_image(self.path) # Loads the image
-            # self.set_width(500)
-        except:
-            print("Couldn't Load", os.path.abspath(str(self.path)))
-            self.failed = True
-            return False
+		except:
+			print("PIXEL CLAMP ERROR:", str(pix))
+		return pix
 
-        if self.texture:
-            self.loaded = True
+	def weight_add(a, b, bw):
+		return (float(a)  * (1.0 - bw)) + float(b) * bw
 
-    def new_img(self, path):
-        self.path = path
+	def add_pixels_alpha(a, b):
+		"""
+			add pixels that have alpha channels.
+		"""
+		b_alpha = float(b[3])
+		alpha_2 = b_alpha / 255.0
 
-    def set_width(self, w):
-        # Scale to the window
-        ratio = self.h / self.w
-        self.w = w
-        self.h = w * ratio
+		a[0] = _Img.weight_add(a[0], b[0], alpha_2)
+		a[1] = _Img.weight_add(a[1], b[1], alpha_2)
+		a[2] = _Img.weight_add(a[2], b[2], alpha_2)
+		a[3] = _Img.weight_add(a[3], b[3], alpha_2)
 
-    def get_dimensions(self):
-        #self.load()
-        return self.h, self.w
-
-    def show(self):
-        if not self.failed and not self.loaded:
-            self.load()
-        if self.loaded:
-            return imgui.image_button(self.texture,self.w, self.h, border_color=(1,1,1,1))
-
-        return False
+		return _Img.clamp_pixel(a) # clamp to png values

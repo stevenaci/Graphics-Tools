@@ -1,5 +1,5 @@
 import imgui
-from tools.art.Image import ImageData
+from tools.filemanagement.image import ImageData
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow, ImageList
 
@@ -10,9 +10,9 @@ class ImageSelection():
         self.imd.imgID
 
 class SelectionWindow():
-    name = "Image Window"
+    label = "Image Window"
     iw = None
-    aw:ArrangeWindow  = None
+    aw: ArrangeWindow  = None
 
     def __init__(self, iw:ImageWindow, aw:ArrangeWindow):
         self.iw = iw
@@ -30,10 +30,10 @@ class SelectionWindow():
     def show(self):
 
         select = self.iw.get_image()
-
         imgui.set_next_window_position(self.iw.pos.x , self.iw.pos.y + self.iw.dim.y )
         imgui.set_next_window_size(self.iw.dim.x, self.iw.dim.y/2 )
         imgui.begin("Add to Lists")
+
         if select:
             imgui.text(select.path)
             imgui.text("add to list")

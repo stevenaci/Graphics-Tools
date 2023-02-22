@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 import cv2

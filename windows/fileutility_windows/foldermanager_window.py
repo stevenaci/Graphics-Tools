@@ -15,13 +15,7 @@ class Toolbar():
 
 class FolderManagerWindow():
 
-    wintitle = "Folder looker"
-    x = 0
-    y = 100
-    w = 50
-    h = 400
-    DISPLAY_SIGNALS = (True, True)
-    handle_callbacks = []
+    label = "Folder looker"
 
     imgpath = ""
     selection = None
@@ -47,7 +41,7 @@ class FolderManagerWindow():
         self.selection.set_folder(self.folderdata[path])
         print(f"focus_folder {self.selection.folder.path}")
 
-    def handle_toolbar(self, signal:int=None):
+    def clicked_toolbar(self, signal:int=None):
         if signal is not None:
             if signal == BTN_UP_FOLDER:
                 self.focus_folder(
@@ -55,20 +49,17 @@ class FolderManagerWindow():
                     os.path.dirname(self.selection.folder.path)
                 )
 
-    def handle_folder(self, signal:FolderItem=None):
-        if signal is not None:
-            if signal.is_dir:
-                self.focus_folder(signal.path)
-            if signal.is_file and signal.is_img:
-                self.image_win.replace_image(signal.path)
-
+    def clicked_folder(self, folder: FolderItem=None):
+        if folder is not None:
+            if folder.is_dir:
+                self.focus_folder(folder.path)
+            if folder.is_file and folder.is_img:
+                self.image_win.replace_image(folder.path)
+    DISPLAY_SIGNALS = (True, True)
     def show(self):
-        self.DISPLAY_SIGNALS = imgui.begin(self.wintitle, self.DISPLAY_SIGNALS)
-        
-        self.handle_toolbar(self.toolbar.show())
-        
-        self.handle_folder(self.selection.folder.show())
-        
+        self.DISPLAY_SIGNALS = imgui.begin(self.label, self.DISPLAY_SIGNALS)
+        self.clicked_toolbar(self.toolbar.show())
+        self.clicked_folder(self.selection.folder.show())
         imgui.end()
 
         return self.DISPLAY_SIGNALS[1] # signal for close button

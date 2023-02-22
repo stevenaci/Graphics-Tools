@@ -1,11 +1,10 @@
-from xml.sax.handler import property_declaration_handler
 import imgui
 import os
 
 DIR_ITEM_ENTER = 1
 
-# An Item in the file system
 class FolderItem():
+# An Item in the file system
     path: str = None
     entry: os.DirEntry = None
     selected: bool = False # gui 
@@ -13,7 +12,6 @@ class FolderItem():
     def __init__(self, entry: os.DirEntry) -> None:
         self.entry = entry
         self.path = entry.path
-        pass
 
     @property
     def is_dir(self):
@@ -34,22 +32,16 @@ class FolderItem():
 # A folder representation
 class FolderData():
     path = None
-    contents = dict[str, FolderItem] # FolderItems
+    contents: dict[str, FolderItem]={} # FolderItems
 
     def __init__(self, path:str) -> None:
         self.path = path
-        self.scanned = False
         self.scan()
 
     def scan(self) -> None:
-        # scan directory
-        #if file: File()
-        #if Folder: Folder()
-        self.contents = {} # FolderItems
+        # refresh contents of directory
         for e in os.scandir(self.path): # e : os dir entry
             self.contents[e.path] = FolderItem(e)
-
-        self.scanned = True
 
     def show(self):
         for k, v in self.contents.items():

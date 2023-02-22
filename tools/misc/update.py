@@ -1,12 +1,11 @@
 
-class Update:
+class Lazy:
 
     subscribers:list
 
     def __init__(self):
         self.subscribers = []
 
-    #@virtual
     def update(self, kwargs: dict):
         pass
 

@@ -1,0 +1,7 @@
+pysdl2==0.9.15
+pysdl2-dll
+imgui
+pillow==9.4.0
+pyopengl==3.1.6
+opencv-python==4.7.0.68
+scikit-learn

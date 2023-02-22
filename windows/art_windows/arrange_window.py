@@ -4,7 +4,7 @@ from tools.filemanagement.savedata import global_savedata # should be called lik
 from tools.filemanagement.imagelist import ImageList
 
 class ArrangeWindow():
-    name = "Arrangement"
+    label = "Arrangement"
     img_lists = list[ImageList] #
     new_list_name = ""
 
@@ -51,7 +51,7 @@ class ArrangeWindow():
 
         #imgui.set_next_window_position(self.pos.x, self.pos.y)
 
-        imgui.begin(self.name, flags=imgui.WINDOW_NO_SAVED_SETTINGS)
+        imgui.begin(self.label, flags=imgui.WINDOW_NO_SAVED_SETTINGS)
 
 
         _changed, self.new_list_name = imgui.input_text(

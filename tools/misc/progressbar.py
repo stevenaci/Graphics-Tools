@@ -1,6 +1,5 @@
-
 import imgui
-# THIS DOESNT WORK AT ALL
+
 class ProgressBar():
 
     p_done = 0.0
@@ -26,5 +25,10 @@ class ProgressBar():
         for s in range(slices):
             if s % 2:
                 x = s * self.slice_sz
-                draw_list.add_rect_filled(x + self.xy.x, 0 + self.xy.y, x + self.slice_sz, x +self.slice_sz, imgui.get_color_u32_rgba(0.0, 0.0, 1.0, 1.0))
+                draw_list.add_rect_filled(
+                    x + self.xy.x,
+                    self.xy.y, x + self.slice_sz,
+                    x +self.slice_sz,
+                    imgui.get_color_u32_rgba(0.0, 0.0, 1.0, 1.0)
+                )
 
