@@ -71,13 +71,9 @@ class Program:
 
             #flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE
             flags = imgui.WINDOW_ALWAYS_AUTO_RESIZE
-            # WINDOW #
             self.display_window()
-
-            # CLEAR #
             gl.glClearColor(0.3, 0.7, 1., 1)
             gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-
             imgui.render()
             impl.render(imgui.get_draw_data())
             SDL_GL_SwapWindow(window)

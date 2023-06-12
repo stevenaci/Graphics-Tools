@@ -58,8 +58,8 @@ class ImageData:
     def set_width(self, w):
         # Scale to the window
         ratio = self.h / self.w
-        self.w = w
-        self.h = w * ratio
+        self.w = int(w)
+        self.h = int(w * ratio)
 
     def get_dimensions(self):
         #self.load()

@@ -40,6 +40,7 @@ class FolderData():
 
     def scan(self) -> None:
         # refresh contents of directory
+        self.contents = dict()
         for e in os.scandir(self.path): # e : os dir entry
             self.contents[e.path] = FolderItem(e)
 
