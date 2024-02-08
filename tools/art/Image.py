@@ -17,7 +17,7 @@ class _Img(Quantization):
 		self.filename = fn.split(".")[:1][0]
 		self.data = None
 
-		if fn is not "":
+		if fn != "":
 			self.data = _Img.load_file(fn)
 			self.load = True
 			self.w = self.data.shape[0]
@@ -61,7 +61,6 @@ class _Img(Quantization):
 		if len(img[0][0]) < 4:
 			print("PNG HAS NO TRANSPARENCY : {}\n appending max alpha".format(fname))
 			img = np.insert(img, 3, 255, axis=2)
-			print(img[0])
 		return img
 
 
@@ -83,9 +82,9 @@ class _Img(Quantization):
 		xmax = dst.shape[0]-origin[0]
 		for y in range(ymax):
 			for x in range(xmax):
-				dst[xi+origin[0]][yi+origin[1]][:] = _Img.add_pixels_alpha(
-					dst[xi+origin[0]][yi+origin[1]][:],
-					src[xi][yi][:])
+				dst[xi+origin[0]][yi+origin[1]] = _Img.add_pixels_alpha(
+					dst[xi+origin[0]][yi+origin[1]],
+					src[xi][yi])
 				xi += 1
 			yi += 1
 			xi = 0
@@ -110,12 +109,13 @@ class _Img(Quantization):
 		"""
 			add pixels that have alpha channels.
 		"""
-		b_alpha = float(b[3])
+		if len(b) > 3: b_alpha = float(b[3])
+		else: b_alpha = 255
 		alpha_2 = b_alpha / 255.0
 
 		a[0] = _Img.weight_add(a[0], b[0], alpha_2)
 		a[1] = _Img.weight_add(a[1], b[1], alpha_2)
 		a[2] = _Img.weight_add(a[2], b[2], alpha_2)
-		a[3] = _Img.weight_add(a[3], b[3], alpha_2)
+		a[3] = _Img.weight_add(a[3], b_alpha, alpha_2)
 
 		return _Img.clamp_pixel(a) # clamp to png values

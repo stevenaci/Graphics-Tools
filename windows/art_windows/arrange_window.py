@@ -37,7 +37,6 @@ class ArrangeWindow():
         i = 0
 
         for x in set(self.del_img_lists):
-            print(x)
             try:
                 self.img_lists.remove(x)
             except ValueError:
@@ -52,8 +51,6 @@ class ArrangeWindow():
         #imgui.set_next_window_position(self.pos.x, self.pos.y)
 
         imgui.begin(self.label, flags=imgui.WINDOW_NO_SAVED_SETTINGS)
-
-
         _changed, self.new_list_name = imgui.input_text(
         '',        self.new_list_name,        256        )
         imgui.same_line()

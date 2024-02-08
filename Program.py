@@ -22,8 +22,6 @@ class Program:
 
     windows = []
 
-    RESOURCES = sdl2.ext.Resources(__file__, "resources")
-
     def __init__(self):
         pass
     
@@ -72,7 +70,7 @@ class Program:
             #flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE
             flags = imgui.WINDOW_ALWAYS_AUTO_RESIZE
             self.display_window()
-            gl.glClearColor(0.3, 0.7, 1., 1)
+            gl.glClearColor(0.3, 0.7, 1, 1)
             gl.glClear(gl.GL_COLOR_BUFFER_BIT)
             imgui.render()
             impl.render(imgui.get_draw_data())

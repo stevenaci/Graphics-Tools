@@ -1,7 +1,7 @@
 import imgui
-from tools.art.image import _Img
+from tools.art.Image import _Img
 from tools.art.colors.colors import HSVColor
-from tools.art.Masking.masker import ImageMasker
+from tools.art.Masking.masker import global_masker, ImageMasker
 from tools.filemanagement.savedata import global_sessiondata
 from tools.misc.update import Lazy
 
@@ -29,15 +29,16 @@ class MaskWindow(Lazy):
     hsv_input = 0, 0, 0
     selecting = False
 
-    def __init__(self, im_win: ImageWindow, masker: ImageMasker):
+    def __init__(self, im_win: ImageWindow):
         self.hsv_img = _Img()
-        self.masker = ImageMasker()
+        self.masker = global_masker
         self.image_win = im_win
 
         im_win.add_subscriber(self)
 
     def update(self):
         if self.image_win.img:
+            print("SET MASK IMAGE", self.image_win.img.path)
             self.hsv_img = _Img(self.image_win.img.path)
 
     def select_pixel(self):
@@ -62,7 +63,7 @@ class MaskWindow(Lazy):
         self.masker.run()
 
     def quant_masks(self):
-        img, colors = self.hsv_img.color_quantize(11)
+        img, colors = self.hsv_img.color_quantize(3)
         for c in colors.values():
             self.masker.colors.append(
                 HSVColor(c)

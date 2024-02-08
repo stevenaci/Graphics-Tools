@@ -1,4 +1,4 @@
-from tools.art.image import _Img
+from tools.art.Image import _Img
 from tools.art.colors.colors import HSVColor, HSVColorange
 from tools.art.Masking.mask import Mask
 
@@ -45,7 +45,7 @@ class ImageMasker:
 
 	def get_mask_data(self)-> list:
 		# get the hsv color mask data 
-		return [m.data for m in self.masks]
+		return [m.res for m in self.masks]
 
 	def save_masks(self)->bool:
 
@@ -56,3 +56,5 @@ class ImageMasker:
 					self.img.filename,
 					str(i)
 				))
+
+global_masker = ImageMasker()

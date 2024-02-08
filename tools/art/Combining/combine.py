@@ -1,7 +1,7 @@
 import numpy as np
 from typing import List
 from imgui import Vec2
-from tools.art.image import _Img
+from tools.art.Image import _Img
 
 
 def combine_images_from_paths(canvas: Vec2, paths: List[str]):

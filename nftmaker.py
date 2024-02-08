@@ -1,7 +1,7 @@
 
 from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
 from windows.art_windows.image_window import ImageWindow
-from windows.fileutility_windows.selection_window import SelectionWindow
+from windows.fileutility_windows.selection_window import ArrangeSelectionWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 from windows.art_windows.create_window import CreateWindow
 from Program import Program
@@ -14,7 +14,7 @@ class NFTWindows:
         im = ImageWindow( )
         fm = FolderManagerWindow("/", im)
         aw = ArrangeWindow()
-        sw = SelectionWindow(im, aw)
+        sw = ArrangeSelectionWindow(im, aw)
         cw = CreateWindow(aw)
         return [fm, im, sw, aw, cw]
 
