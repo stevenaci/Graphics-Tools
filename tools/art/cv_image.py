@@ -5,7 +5,7 @@ import imgui
 from tools.art.colors.quantization import Quantization
 from tools.math import clamp
 
-class _Img(Quantization):
+class CVImg(Quantization):
 	"""
 	_Img: Image class that combines some libs
 
@@ -18,7 +18,7 @@ class _Img(Quantization):
 		self.data = None
 
 		if fn is not "":
-			self.data = _Img.load_file(fn)
+			self.data = CVImg.load_file(fn)
 			self.load = True
 			self.w = self.data.shape[0]
 			self.h = self.data.shape[1]
@@ -57,7 +57,7 @@ class _Img(Quantization):
 		img = cv.imread(os.path.abspath(fname), cv.IMREAD_UNCHANGED)
 		if img is None:
 			print("Couldnt read img : {}".format(fname))
-
+			return None
 		if len(img[0][0]) < 4:
 			print("PNG HAS NO TRANSPARENCY : {}\n appending max alpha".format(fname))
 			img = np.insert(img, 3, 255, axis=2)
@@ -83,7 +83,7 @@ class _Img(Quantization):
 		xmax = dst.shape[0]-origin[0]
 		for y in range(ymax):
 			for x in range(xmax):
-				dst[xi+origin[0]][yi+origin[1]][:] = _Img.add_pixels_alpha(
+				dst[xi+origin[0]][yi+origin[1]][:] = CVImg.add_pixels_alpha(
 					dst[xi+origin[0]][yi+origin[1]][:],
 					src[xi][yi][:])
 				xi += 1
@@ -113,9 +113,9 @@ class _Img(Quantization):
 		b_alpha = float(b[3])
 		alpha_2 = b_alpha / 255.0
 
-		a[0] = _Img.weight_add(a[0], b[0], alpha_2)
-		a[1] = _Img.weight_add(a[1], b[1], alpha_2)
-		a[2] = _Img.weight_add(a[2], b[2], alpha_2)
-		a[3] = _Img.weight_add(a[3], b[3], alpha_2)
+		a[0] = CVImg.weight_add(a[0], b[0], alpha_2)
+		a[1] = CVImg.weight_add(a[1], b[1], alpha_2)
+		a[2] = CVImg.weight_add(a[2], b[2], alpha_2)
+		a[3] = CVImg.weight_add(a[3], b[3], alpha_2)
 
-		return _Img.clamp_pixel(a) # clamp to png values
+		return CVImg.clamp_pixel(a) # clamp to png values

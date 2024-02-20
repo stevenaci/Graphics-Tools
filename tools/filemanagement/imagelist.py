@@ -1,19 +1,16 @@
 import imgui
 from tools.filemanagement.image import ImageData
 from random import choice
-
 class ImageList():
     """
-        a LIST of image files basically,
-        with some interesting features.
+        a window used for making lists:
+
         - Create labelled lists out of urls,
         - Return a random image
         - Retain a size for all images in the list
     """
     imgs = dict[int, ImageData]
     label = ""
-    x = 0
-    y = 0
     
     SIG_DEL = 1
     def __init__(self,label, urls:list):
@@ -24,31 +21,15 @@ class ImageList():
         for u in urls:
             x = ImageData(u)
             self.add_img(x)
-
-        self.x = 0
-        self.y = 0
-        self.w = 540
-        self.h = 504
         self.set_color()
         self.del_imgs = []
 
-    def resize(self,w,h):
+    def resize(self, w, h):
         self.pos.x = w
         self.pos.y = h
 
-    def set_x(self, x):
-        self.x = x
-    def set_y(self, y):
-        self.y = y
-    def set_w(self, w):
-        self.w = w
-    def set_h(self, h):
-        self.h = h
-    
-    def get_frame(self):
-        return imgui.Vec4(self.x,self.y,self.w,self.h)
 
-    def select_random(self):
+    def select_random(self) -> str:
         imgs = self.get_img_urls()
         return choice(imgs)
 

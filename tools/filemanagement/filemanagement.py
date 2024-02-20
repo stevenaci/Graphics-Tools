@@ -49,6 +49,13 @@ class FolderData():
             if v.show():
                 return v
 
+class FolderManager():
+    def __init__(self, path=None):
+        if not path:
+            path = os.getcwd()
+        self.selection = Selection()
+        self.focus_folder(path)
+
 # File seletion
 class Selection():
     folder: FolderData

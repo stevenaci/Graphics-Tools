@@ -35,7 +35,7 @@ class ImageData:
         ImageData.img_ID_counter += 1
         self.imgID = ImageData.img_ID_counter
 
-        self.new_img(path)
+        self.path = path
         self.loaded = False
         self.failed = False
 
@@ -51,9 +51,6 @@ class ImageData:
 
         if self.texture:
             self.loaded = True
-
-    def new_img(self, path):
-        self.path = path
 
     def set_width(self, w):
         # Scale to the window

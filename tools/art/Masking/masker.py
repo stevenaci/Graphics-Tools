@@ -1,4 +1,4 @@
-from tools.art.image import _Img
+from apps.tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor, HSVColorange
 from tools.art.Masking.mask import Mask
 
@@ -13,9 +13,10 @@ class ImageMasker:
 	masks = []
 	color_ranges: list[HSVColorange] = []
 	colors: list[HSVColor] = []
+	img: CVImg
 
 	def __init__(self):
-		self.img = _Img()
+		self.img = CVImg()
 		self.color_ranges = []
 		self.colors = []
 
@@ -50,7 +51,7 @@ class ImageMasker:
 	def save_masks(self)->bool:
 
 		for i, mask in enumerate(self.masks):
-			_Img.save(
+			CVImg.save(
 				mask.res,
 				"{}{}.jpg".format(
 					self.img.filename,

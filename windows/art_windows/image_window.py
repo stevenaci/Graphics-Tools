@@ -1,6 +1,6 @@
 import imgui
 import tools.filemanagement.image as iu
-from tools.misc.update import Lazy 
+from tools.misc.update import Lazy
 class ImageWindow(Lazy):
     """
     Window that displays an image

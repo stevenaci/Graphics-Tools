@@ -1,5 +1,5 @@
 import imgui
-from tools.art.image import _Img
+from apps.tools.art.cv_image import CVImg
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 from tools.art.Combining.combine import combine_images, combine_images_from_paths
@@ -31,7 +31,7 @@ class CreateWindow():
                 self.masker.img.data, 
                 [self.masker.get_mask_data()]
             )
-            _Img.save(
+            CVImg.save(
                 result,
                 "./output/" + "mask_" + self.masker.img.filename + ".png"
             )
@@ -40,7 +40,7 @@ class CreateWindow():
         #
         paths = self.aw.gen_random_imgs() # the path for each image
         result = combine_images_from_paths(self.drawPlane.dim, paths)
-        _Img.save(result, f"./output/{self.output_name}.png")
+        CVImg.save(result, f"./output/{self.output_name}.png")
 
     def show(self):
 
