@@ -2,16 +2,18 @@ import imgui
 import os
 from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData, Selection
 
-BTN_UP_FOLDER = 2
-
-class Toolbar():
+class FolderManagerToolbar():
     selected = ""
 
+    class Signals(enum):
+        BTN_NEW_WINDOW = 1
+        BTN_UP_FOLDER = 2
+    
     def __init__(self) -> None:
         pass
     def show(self):
         if imgui.button("Go up"):
-            return BTN_UP_FOLDER
+            return self.Signals.BTN_UP_FOLDER
 
 class FolderManagerWindow(FolderManager):
 
@@ -27,10 +29,11 @@ class FolderManagerWindow(FolderManager):
 
         self.toolbar = Toolbar()
         self.image_win = previewwindow
+        self.windows = []
+        self.DISPLAY_SIGNALS = (True, True)
    
 
     def focus_folder(self, path):
-
         if path not in self.folderdata.keys():
             self.folderdata[path] = FolderData(path)
         else:
@@ -40,11 +43,10 @@ class FolderManagerWindow(FolderManager):
 
     def clicked_toolbar(self, signal:int=None):
         if signal is not None:
-            if signal == BTN_UP_FOLDER:
-                self.focus_folder(
-                    # set to directory of file
-                    os.path.dirname(self.selection.folder.path)
-                )
+            if signal == FolderManagerToolbar.Signals.BTN_UP_FOLDER:
+                self.focus_folder(os.path.dirname(self.selection.folder.path))
+            if signal == FolderManagerToolbar.Signals.BTN_NEW_WINDOW:
+                self.open_new_window(self.selection.folder.path)
 
     def clicked_folder(self, folder: FolderItem=None):
         if folder is not None:
@@ -53,13 +55,17 @@ class FolderManagerWindow(FolderManager):
             if folder.is_file and folder.is_img:
                 self.image_win.replace_image(folder.path)
 
+
+    def open_new_window(self, path):
+        self.windows.append(FolderManagerWindow(path, self.image_win))
+
     DISPLAY_SIGNALS = (True, True)
     def show(self):
+        
         self.DISPLAY_SIGNALS = imgui.begin(self.label, self.DISPLAY_SIGNALS)
         self.clicked_toolbar(self.toolbar.show())
         # print(len(self.selection.folder.contents))
 
         self.clicked_folder(self.selection.folder.show())
         imgui.end()
-
         return self.DISPLAY_SIGNALS[1] # signal for close button

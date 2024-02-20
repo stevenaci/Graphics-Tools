@@ -6,7 +6,7 @@ from Program import Program
 from windows.art_windows.masking_window import MaskWindow
 from tools.art.Masking.masker import ImageMasker
 from windows.art_windows.create_window import CreateWindow
-from windows.fileutility_windows.selection_window import SelectionWindow
+from windows.art_windows.selection_window import ArrangeSelectionWindow
 
 class PrintWindows:
 
@@ -16,10 +16,10 @@ class PrintWindows:
         im = ImageWindow()
         fm = FolderManagerWindow("/", im)
         masker = ImageMasker()
-        ma = MaskWindow(im, masker)
+        ma = MaskWindow(im)
         aw = ArrangeWindow()
-        cw = CreateWindow(aw=aw, iw=im, masker= masker)
-        sw = SelectionWindow(im, aw)
+        cw = CreateWindow(aw=aw, iw=im)
+        sw = ArrangeSelectionWindow(im, aw)
         return [aw, fm, im, ma, cw, sw]
 
 class PrintMaker(Program):

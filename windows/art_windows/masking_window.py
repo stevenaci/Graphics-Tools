@@ -1,7 +1,7 @@
 import imgui
 from apps.tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
-from tools.art.Masking.masker import ImageMasker
+from tools.art.Masking.masker import global_masker, ImageMasker
 from tools.filemanagement.savedata import global_sessiondata
 from tools.misc.update import Lazy
 
@@ -63,7 +63,7 @@ class MaskWindow(Lazy):
         self.masker.run()
 
     def quant_masks(self):
-        img, colors = self.hsv_img.color_quantize(11)
+        img, colors = self.hsv_img.color_quantize(3)
         for c in colors.values():
             self.masker.colors.append(
                 HSVColor(c)
