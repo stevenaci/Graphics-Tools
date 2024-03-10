@@ -1,23 +1,13 @@
+from collections import Counter
 from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 import cv2
 
-def find_distincts(arr: np.array):
-    """
-        Find distinct values in numpy array.
-    """
+def find_distincts(arr: np.array) -> Counter: 
+    pixels = arr.reshape(-1, arr.shape[2]) # (hw, 4)
+    print(pixels.shape)
+    return np.unique(pixels, return_counts=False, axis=0)[:6]
 
-    dist_vals = {}
-    for i in range(arr.shape[0]):
-        
-        for j in range(arr.shape[1]):
-
-            # Distinct key signatures for sequences of numbers
-            dist_vals[
-                arr[i][j].sum() + arr[i][j].prod()
-            ] = arr[i][j]
-
-    return dist_vals
 class Quantization():
 
     data: np.array
@@ -56,7 +46,8 @@ class Quantization():
 
         quant = cv2.cvtColor(cv2.cvtColor(quant, cv2.COLOR_LAB2BGR),
             cv2.COLOR_BGR2HSV)
-        colors = find_distincts(quant)
+        hsv_colors = find_distincts(quant)
+        
         #image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
 
-        return quant, colors
+        return quant, hsv_colors
