@@ -1,5 +1,5 @@
 import imgui
-from apps.tools.art.cv_image import CVImg
+from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
 from tools.art.Masking.masker import global_masker, ImageMasker
 from tools.filemanagement.savedata import global_sessiondata
@@ -29,9 +29,9 @@ class MaskWindow(Lazy):
     hsv_input = 0, 0, 0
     selecting = False
 
-    def __init__(self, im_win: ImageWindow, masker: ImageMasker):
+    def __init__(self, im_win: ImageWindow):
         self.hsv_img = CVImg()
-        self.masker = ImageMasker()
+        self.masker = global_masker
         self.image_win = im_win
 
         im_win.add_subscriber(self)
@@ -64,7 +64,8 @@ class MaskWindow(Lazy):
 
     def quant_masks(self):
         img, colors = self.hsv_img.color_quantize(3)
-        for c in colors.values():
+        self.masker.img.data = img
+        for c in colors:
             self.masker.colors.append(
                 HSVColor(c)
             )
@@ -72,6 +73,8 @@ class MaskWindow(Lazy):
 
     def show(self):
         imgui.begin(self.label)
+        self.quant_masks()
+        self.masker.save_masks()
         _, self.hsv_input = imgui.input_int3('HSV', *self.hsv_input)
 
         self.btn_add_color = imgui.button("Add Colormask")

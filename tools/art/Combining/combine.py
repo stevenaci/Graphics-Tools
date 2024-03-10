@@ -1,7 +1,7 @@
 from typing import List
 from imgui import Vec2
-from apps.tools.art.cv_image import CVImg
-from tools.errors import process_error
+from tools.art.cv_image import CVImg
+from tools.errors import _error
 
 def combine_images_from_paths(canvas_shape: Vec2, paths: List[str]):
 	imgs = []
@@ -19,4 +19,5 @@ def combine_images(canvas_shape: Vec2, cv_imgs: list):
 			surface = CVImg.blit(surface, pix)
 		return surface
 	except Exception as e:
-		process_error("COMBINE IMAGES {} {}".format(canvas_shape, cv_imgs))
+
+		_error("COMBINE IMAGES {} {} {}".format(canvas_shape, cv_imgs, e.__str__()))

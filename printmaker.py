@@ -4,7 +4,6 @@ from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
 from windows.art_windows.image_window import ImageWindow
 from Program import Program
 from windows.art_windows.masking_window import MaskWindow
-from tools.art.Masking.masker import ImageMasker
 from windows.art_windows.create_window import CreateWindow
 from windows.art_windows.selection_window import ArrangeSelectionWindow
 
@@ -15,11 +14,11 @@ class PrintWindows:
         print("Generating windows for Art Program")
         im = ImageWindow()
         fm = FolderManagerWindow("/", im)
-        masker = ImageMasker()
         ma = MaskWindow(im)
         aw = ArrangeWindow()
         cw = CreateWindow(aw=aw, iw=im)
         sw = ArrangeSelectionWindow(im, aw)
+        im.replace_image("/Files/Art/Pictures/1585090160836.jpg")
         return [aw, fm, im, ma, cw, sw]
 
 class PrintMaker(Program):

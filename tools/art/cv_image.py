@@ -17,7 +17,7 @@ class CVImg(Quantization):
 		self.filename = fn.split(".")[:1][0]
 		self.data = None
 
-		if fn is not "":
+		if fn != "":
 			self.data = CVImg.load_file(fn)
 			self.load = True
 			self.w = self.data.shape[0]
@@ -66,8 +66,10 @@ class CVImg(Quantization):
 
 
 	def save(grid: np.array, fn: str) -> bool:
-		cv.imwrite(fn, grid)
-		print(f"Saved {fn}")
+		outputfolder = "./output/"
+		if grid is not None:
+			cv.imwrite(outputfolder + fn, grid)
+			print(f"Saved to {outputfolder}/{fn}")
 
 	def resize_image(grid: np.array, dim: imgui.Vec2) -> np.array:
 			return cv.resize(grid, (dim.y, dim.x), interpolation=cv.INTER_NEAREST)
@@ -76,20 +78,14 @@ class CVImg(Quantization):
 		"""
 			Copy one np array onto another
 		"""
-		yi = 0 
-		xi = 0
+
 
 		ymax = dst.shape[1]-origin[1]
 		xmax = dst.shape[0]-origin[0]
 		for y in range(ymax):
 			for x in range(xmax):
-				dst[xi+origin[0]][yi+origin[1]][:] = CVImg.add_pixels_alpha(
-					dst[xi+origin[0]][yi+origin[1]][:],
-					src[xi][yi][:])
-				xi += 1
-			yi += 1
-			xi = 0
-	
+				dst[x+origin[0]][y+origin[1]] = CVImg.add_pixels_alpha(
+					dst[x+origin[0]][y+origin[1]], src[x][y])
 		return dst
 
 	def clamp_pixel(pix: np.array): # clamp to 8 bit

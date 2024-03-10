@@ -1,17 +1,18 @@
 import imgui
 import os
-from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData, Selection
-
+from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData
+from enum import Enum
 class FolderManagerToolbar():
     selected = ""
 
-    class Signals(enum):
+    class Signals(Enum):
         BTN_NEW_WINDOW = 1
         BTN_UP_FOLDER = 2
     
     def __init__(self) -> None:
         pass
     def show(self):
+        
         if imgui.button("Go up"):
             return self.Signals.BTN_UP_FOLDER
 
@@ -27,7 +28,7 @@ class FolderManagerWindow(FolderManager):
     def __init__(self, path=None, previewwindow=None):
         FolderManager.__init__(self, path)
 
-        self.toolbar = Toolbar()
+        self.toolbar = FolderManagerToolbar()
         self.image_win = previewwindow
         self.windows = []
         self.DISPLAY_SIGNALS = (True, True)

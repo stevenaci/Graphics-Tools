@@ -1,4 +1,4 @@
-from apps.tools.art.cv_image import CVImg
+from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor, HSVColorange
 from tools.art.Masking.mask import Mask
 
@@ -49,12 +49,12 @@ class ImageMasker:
 		return [m.res for m in self.masks]
 
 	def save_masks(self)->bool:
-
+		import time
 		for i, mask in enumerate(self.masks):
 			CVImg.save(
 				mask.res,
-				"{}{}.jpg".format(
-					self.img.filename,
+				"{}_{}.jpg".format(
+					time.time(),
 					str(i)
 				))
 

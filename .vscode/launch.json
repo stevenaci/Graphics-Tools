@@ -9,7 +9,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "./printmaker.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

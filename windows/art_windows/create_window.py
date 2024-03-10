@@ -1,5 +1,5 @@
 import imgui
-from apps.tools.art.cv_image import CVImg
+from tools.art.cv_image import CVImg
 from windows.art_windows.image_window import ImageWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 from tools.art.Combining.combine import combine_images, combine_images_from_paths
