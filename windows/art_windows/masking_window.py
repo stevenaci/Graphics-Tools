@@ -1,8 +1,8 @@
 import imgui
 from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
-from tools.art.Masking.masker import global_masker, ImageMasker
-from tools.filemanagement.savedata import global_sessiondata
+from tools.art.Masking.masker import global_masker, ImageMasker, Mask
+from tools.filemanagement.savedata import save_state
 from tools.misc.update import Lazy
 
 from windows.art_windows.image_window import ImageWindow
@@ -17,7 +17,6 @@ class MaskWindow(Lazy):
     - hsv color
     - outputs a mask of that color range, able to be saved.
     """
-
     label = "Mask Window"
     img_path: str
     masks = []
@@ -33,7 +32,7 @@ class MaskWindow(Lazy):
         self.hsv_img = CVImg()
         self.masker = global_masker
         self.image_win = im_win
-
+        self.colors = []
         im_win.add_subscriber(self)
 
     def update(self):
@@ -43,7 +42,7 @@ class MaskWindow(Lazy):
 
     def select_pixel(self):
 
-        if self.hsv_img.load:
+        if self.hsv_img.loaded:
             xy = imgui.get_mouse_pos()
 
             self.select_color = HSVColor(
@@ -53,28 +52,21 @@ class MaskWindow(Lazy):
 
     def add_current_color(self):
         # add a color to mask
-        self.masker.colors.append(
+        self.colors.append(
             HSVColor(self.hsv_input)
         )
 
-    def gen_masks(self):
-        self.masker.img = self.hsv_img
-        global_sessiondata.update_data("mask_colors", self.masker.colors)
-        self.masker.run()
+    def gen_masks(self, colors: list[HSVColor]) -> list[Mask]:
+        save_state.update_data("mask_colors", colors)
+        return self.masker.create_color_masks(self.masker.create_color_ranges(colors))
 
-    def quant_masks(self):
+    def quant_masks(self) -> list[Mask]:
         img, colors = self.hsv_img.color_quantize(3)
         self.masker.img.data = img
-        for c in colors:
-            self.masker.colors.append(
-                HSVColor(c)
-            )
-        self.gen_masks()
+        return self.masker.create_color_masks(self.masker.create_color_ranges(colors), img=img)
 
     def show(self):
         imgui.begin(self.label)
-        self.quant_masks()
-        self.masker.save_masks()
         _, self.hsv_input = imgui.input_int3('HSV', *self.hsv_input)
 
         self.btn_add_color = imgui.button("Add Colormask")
@@ -82,7 +74,7 @@ class MaskWindow(Lazy):
             self.selecting = True
         if self.hsv_img:
             self.hsv_img.display()
-        for hsv in self.masker.colors:
+        for hsv in self.colors:
             imgui.text(hsv.str_colors())
 
         if imgui.is_mouse_down() and self.selecting:
@@ -99,6 +91,7 @@ class MaskWindow(Lazy):
         # Separate components.
         self.btn_color_quant = imgui.button("Color Quantize Mask")
         if self.btn_color_quant:
-            self.quant_masks()
+            self.masks = self.quant_masks()
+            self.masker.save_masks(self.masks)
         imgui.end()
         return

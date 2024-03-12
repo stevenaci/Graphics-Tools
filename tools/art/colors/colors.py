@@ -37,7 +37,7 @@ class HSVColorange:
 
     def __init__(self, hsv: HSVColor):
         from ..cv_image import clamp
-        c = np.array(hsv.color)
+        c = hsv
         self.low = np.array(
             [clamp(c[0]- self.h_pass,0,255),
             c[1],

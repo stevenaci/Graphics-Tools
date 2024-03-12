@@ -13,15 +13,16 @@ class CVImg(Quantization):
 	data: np.array
 
 	def __init__(self, fn: str=""):
-		self.load = False
+		self.loaded = False
 		self.filename = fn.split(".")[:1][0]
 		self.data = None
 
 		if fn != "":
 			self.data = CVImg.load_file(fn)
-			self.load = True
-			self.w = self.data.shape[0]
-			self.h = self.data.shape[1]
+			if self.data.any():
+				self.loaded = True
+				self.w = self.data.shape[0]
+				self.h = self.data.shape[1]
 
 	def get_pixel(self, xy: imgui.Vec2):
 		try:

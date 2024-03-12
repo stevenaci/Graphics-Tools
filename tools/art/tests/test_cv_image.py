@@ -7,3 +7,4 @@ def test_blit_images_():
 	img2 = CVImg.create_blank_image(w, h)
 	CVImg.blit(img1, img2)
 	assert img1.size == img2.size
+

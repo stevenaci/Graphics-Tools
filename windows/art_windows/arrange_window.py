@@ -74,7 +74,7 @@ class ArrangeWindow():
     def load(self):
 
         # dict of saved img strs
-        imglists = global_savedata.get_data("imglists") or {}
+        imglists = global_savedata.get("imglists") or {}
         
         for label in imglists.keys():
             # take saved strs and recreate image lists

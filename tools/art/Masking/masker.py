@@ -10,47 +10,20 @@ class ImageMasker:
 			-- See HSVColorange for ways to configure threshold etc.
 	
 	"""
-	masks = []
-	color_ranges: list[HSVColorange] = []
-	colors: list[HSVColor] = []
-	img: CVImg
-
 	def __init__(self):
-		self.img = CVImg()
-		self.color_ranges = []
-		self.colors = []
+		pass
 
-	def run(self)-> list:
-		self.create_color_ranges()
-		self.create_color_masks()
+	# Creates a new color range for each color
+	def create_color_ranges(self, colors: list[HSVColor]) -> list[HSVColorange]:
+		return [HSVColorange(c) for c in colors]
 
-		# 
-		return True
+	# Creates a new pixel mask for each color
+	def create_color_masks(self, color_ranges: list[HSVColorange], img: CVImg) -> list[Mask]:
+		return [Mask(img.data, c) for c in color_ranges]
 
-	def create_color_ranges(self):
-		# Creates a new color range for each color
-		self.color_ranges = []
-		for c in self.colors:
-			self.color_ranges.append(HSVColorange(c))
-
-	def create_color_masks(self):
-		# Creates a new pixel mask for each color
-		self.masks = []
-		for colorange in self.color_ranges:
-			print(
-				"creating color mask {} -> {} ".format(
-					colorange.low, colorange.hi
-				)
-			)
-			self.masks.append(Mask(self.img.data, colorange))
-
-	def get_mask_data(self)-> list:
-		# get the hsv color mask data 
-		return [m.res for m in self.masks]
-
-	def save_masks(self)->bool:
+	def save_masks(self, masks: list[Mask])->bool:
 		import time
-		for i, mask in enumerate(self.masks):
+		for i, mask in enumerate(masks):
 			CVImg.save(
 				mask.res,
 				"{}_{}.jpg".format(

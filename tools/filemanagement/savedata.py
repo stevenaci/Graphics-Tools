@@ -46,7 +46,7 @@ class SaveData:
             self.data = {}
         print(self.data)
 
-    def get_data(self, key):
+    def get(self, key):
         return self.data.get(key)
 
     def disable_saving(self):
@@ -55,4 +55,4 @@ class SaveData:
 global_savedata = SaveData()
 global_savedata.load()
 
-global_sessiondata = SaveData() # Create "in-data store"
+save_state = SaveData() # Create "in-data store"

@@ -13,7 +13,7 @@ class Mask:
 		# hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
 		self.res = cv.bitwise_and(
-			hsv_img, hsv_img, 
-			mask=cv.inRange(hsv_img, r.low, r.hi)
+			hsv_img.obj, hsv_img.obj, 
+			mask=cv.inRange(hsv_img.obj, r.low, r.hi)
 		)
 		self.res = cv.cvtColor(self.res, cv.COLOR_HSV2BGR)

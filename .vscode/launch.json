@@ -6,8 +6,8 @@
     "configurations": [
         
         {
-            "name": "Python: Current File",
-            "type": "python",
+            "name": "Printmaker",
+            "type": "debugpy",
             "request": "launch",
             "program": "./printmaker.py",
             "console": "integratedTerminal",

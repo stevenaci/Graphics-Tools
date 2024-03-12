@@ -1,5 +1,6 @@
 import imgui
 import os
+from .savedata import global_savedata
 
 DIR_ITEM_ENTER = 1
 
@@ -41,8 +42,11 @@ class FolderData():
     def scan(self) -> None:
         # refresh contents of directory
         self.contents = dict()
-        for e in os.scandir(self.path): # e : os dir entry
-            self.contents[e.path] = FolderItem(e)
+        try:
+            for e in os.scandir(self.path): # e : os dir entry
+                self.contents[e.path] = FolderItem(e)
+        except PermissionError:
+            print()
 
     def show(self):
         for k, v in self.contents.items():
@@ -51,15 +55,32 @@ class FolderData():
 
 class FolderManager():
     def __init__(self, path=None):
-        if not path:
-            path = os.getcwd()
         self.selection = Selection()
-        self.focus_folder(path)
+        if path:
+            self.focus_folder(path)
+    
+    def load_last_folder(self):
+        lastfolder = global_savedata.get('lastfolder')
+        if lastfolder:
+            self.focus_folder(lastfolder)
 
+    def save_last_folder(self):    
+        global_savedata.update_data("lastfolder", self.selection.folder.path)
+        global_savedata.save() # save out
+
+    def focus_folder(self, path):
+        if path not in self.folderdata.keys():
+            self.folderdata[path] = FolderData(path)
+        else:
+            self.folderdata[path].scan()
+        self.selection.set_folder(self.folderdata[path])
+        self.save_last_folder()
+        
 # File seletion
 class Selection():
     folder: FolderData
     def __init__(self) -> None:
-        pass
+        self.folder = None
+    
     def set_folder(self, f: FolderData):
         self.folder = f

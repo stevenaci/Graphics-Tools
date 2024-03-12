@@ -2,6 +2,7 @@ import imgui
 import os
 from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData
 from enum import Enum
+
 class FolderManagerToolbar():
     selected = ""
 
@@ -23,24 +24,15 @@ class FolderManagerWindow(FolderManager):
     imgpath = ""
     selection = None
     folderdata = {}
-
     
     def __init__(self, path=None, previewwindow=None):
         FolderManager.__init__(self, path)
-
+        if not self.selection.folder:
+            self.load_last_folder()
         self.toolbar = FolderManagerToolbar()
         self.image_win = previewwindow
         self.windows = []
         self.DISPLAY_SIGNALS = (True, True)
-   
-
-    def focus_folder(self, path):
-        if path not in self.folderdata.keys():
-            self.folderdata[path] = FolderData(path)
-        else:
-            self.folderdata[path].scan()
-        self.selection.set_folder(self.folderdata[path])
-        print(f"focus_folder {self.selection.folder.path}")
 
     def clicked_toolbar(self, signal:int=None):
         if signal is not None:

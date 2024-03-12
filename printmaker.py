@@ -13,12 +13,11 @@ class PrintWindows:
     def create():
         print("Generating windows for Art Program")
         im = ImageWindow()
-        fm = FolderManagerWindow("/", im)
+        fm = FolderManagerWindow(None, im)
         ma = MaskWindow(im)
         aw = ArrangeWindow()
         cw = CreateWindow(aw=aw, iw=im)
         sw = ArrangeSelectionWindow(im, aw)
-        im.replace_image("/Files/Art/Pictures/1585090160836.jpg")
         return [aw, fm, im, ma, cw, sw]
 
 class PrintMaker(Program):
