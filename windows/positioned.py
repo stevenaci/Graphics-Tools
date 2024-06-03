@@ -1,6 +1,6 @@
 from imgui import Vec4
 
-class FramedWindow():
+class Positioned():
 
     def __init__(self, x_=0, y_=0, w_=500, h_=500) -> None:
         self.x, self.y, self.w, self.h = x_, y_, w_, h_

@@ -58,7 +58,7 @@ class FolderManagerWindow(FolderManager):
         self.DISPLAY_SIGNALS = imgui.begin(self.label, self.DISPLAY_SIGNALS)
         self.clicked_toolbar(self.toolbar.show())
         # print(len(self.selection.folder.contents))
-
-        self.clicked_folder(self.selection.folder.show())
+        if self.selection.folder:
+          self.clicked_folder(self.selection.folder.show())
         imgui.end()
         return self.DISPLAY_SIGNALS[1] # signal for close button
