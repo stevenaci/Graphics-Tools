@@ -22,6 +22,7 @@ class Quantization():
             HSV version of the image array:np.array, 
             list of distinct colors: np.array
         """
+        if not self.data.any(): return
         # load the image and grab its width and height
         (h, w) = self.data.shape[:2]
         # convert the image from the RGB color space to the L*a*b*

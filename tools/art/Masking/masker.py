@@ -26,7 +26,7 @@ class ImageMasker:
 		for i, mask in enumerate(masks):
 			CVImg.save(
 				mask.res,
-				"{}_{}.jpg".format(
+				"{}_{}.png".format(
 					time.time(),
 					str(i)
 				))
