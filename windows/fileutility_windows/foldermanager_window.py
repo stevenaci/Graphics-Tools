@@ -37,7 +37,10 @@ class FolderManagerWindow(FolderManager):
     def clicked_toolbar(self, signal:int=None):
         if signal is not None:
             if signal == FolderManagerToolbar.Signals.BTN_UP_FOLDER:
-                self.focus_folder(os.path.dirname(self.selection.folder.path))
+                if self.selection.folder:
+                    self.focus_folder(os.path.dirname(self.selection.folder.path))
+                else:
+                    self.focus_folder(os.getcwd())
             if signal == FolderManagerToolbar.Signals.BTN_NEW_WINDOW:
                 self.open_new_window(self.selection.folder.path)
 
