@@ -1,4 +1,5 @@
 import cv2 as cv
+from cv2.typing import MatLike
 import numpy as np
 import os
 import imgui
@@ -10,7 +11,7 @@ class CVImg(Quantization):
 	_Img: Image class that combines some libs
 
 	"""
-	data: np.array
+	data: MatLike
 
 	def __init__(self, fn: str=""):
 		self.loaded = False
@@ -26,7 +27,6 @@ class CVImg(Quantization):
 
 	def get_pixel(self, xy: imgui.Vec2):
 		try:
-
 			x = int(xy.x)
 			y = int(xy.y)
 			pix = [0, 0, 0]
@@ -34,6 +34,7 @@ class CVImg(Quantization):
 				pix = self.data[x, y]
 			return pix
 		except:
+			print("Pixel not found")
 			return None
 
 	def select_pixel(self, img, xy: tuple):
@@ -53,7 +54,7 @@ class CVImg(Quantization):
 			# no alpha
 			#
 
-	def load_file(fname: str):
+	def load_file(fname: str) -> MatLike:
 		# loads an image in opencv
 		img = cv.imread(os.path.abspath(fname), cv.IMREAD_UNCHANGED)
 		if img is None:
@@ -65,12 +66,12 @@ class CVImg(Quantization):
 			print(img[0])
 		return img
 
-
 	def save(grid: np.array, fn: str) -> bool:
 		outputfolder = "./output/"
 		if grid is not None:
 			cv.imwrite(outputfolder + fn, grid)
 			print(f"Saved to {outputfolder}/{fn}")
+		else: print("Didn't save empty file")
 
 	def resize_image(grid: np.array, dim: imgui.Vec2) -> np.array:
 			return cv.resize(grid, (dim.y, dim.x), interpolation=cv.INTER_NEAREST)
@@ -79,8 +80,6 @@ class CVImg(Quantization):
 		"""
 			Copy one np array onto another
 		"""
-
-
 		ymax = dst.shape[1]-origin[1]
 		xmax = dst.shape[0]-origin[0]
 		for y in range(ymax):

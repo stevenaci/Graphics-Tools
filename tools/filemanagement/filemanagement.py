@@ -45,8 +45,8 @@ class FolderData():
         try:
             for e in os.scandir(self.path): # e : os dir entry
                 self.contents[e.path] = FolderItem(e)
-        except PermissionError:
-            print()
+        except:
+            print("Folder not accessible")
 
     def show(self):
         for k, v in self.contents.items():

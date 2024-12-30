@@ -23,12 +23,14 @@ class ImageMasker:
 
 	def save_masks(self, masks: list[Mask])->bool:
 		import time
+		# save all masks
 		for i, mask in enumerate(masks):
 			CVImg.save(
-				mask.res,
-				"{}_{}.jpg".format(
-					time.time(),
-					str(i)
-				))
+				mask.res, "{}_{}.jpg".format(time.time(), str(i))
+			)
+		# save the combined mask
+		CVImg.save(
+			Mask.combine([m.res for m in masks]), "{}_{}.jpg".format(time.time(), "full")
+		)
 
 global_masker = ImageMasker()
