@@ -1,5 +1,5 @@
 import imgui
-from windows.art_windows.image_window import ImageWindow
+from windows.art_windows.image_viewer_window import ImageViewerWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 
 class ArrangeSelectionWindow():
@@ -7,7 +7,7 @@ class ArrangeSelectionWindow():
     iw = None
     arrage_window: ArrangeWindow  = None
 
-    def __init__(self, iw:ImageWindow, aw:ArrangeWindow):
+    def __init__(self, iw:ImageViewerWindow, aw:ArrangeWindow):
         self.iw = iw
         self.arrage_window= aw
 

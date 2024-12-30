@@ -54,6 +54,7 @@ class FolderData():
                 return v
 
 class FolderManager():
+    folderdata: dict[str, FolderData]
     def __init__(self, path=None):
         self.selection = Selection()
         if path:
@@ -62,23 +63,23 @@ class FolderManager():
     def load_last_folder(self):
         lastfolder = global_savedata.get('lastfolder')
         if lastfolder:
-            try:
-                self.focus_folder(lastfolder)
-            except FileNotFoundError:
-                pass
-
+            self.focus_folder(lastfolder)
+            
     def save_last_folder(self):    
         global_savedata.update_data("lastfolder", self.selection.folder.path)
         global_savedata.save() # save out
 
     def focus_folder(self, path):
-        if path not in self.folderdata.keys():
-            self.folderdata[path] = FolderData(path)
-        else:
-            self.folderdata[path].scan()
-        self.selection.set_folder(self.folderdata[path])
-        self.save_last_folder()
-        
+        try:
+            if path not in self.folderdata.keys():
+                self.folderdata[path] = FolderData(path)
+            else:
+                self.folderdata[path].scan()
+            self.selection.set_folder(self.folderdata[path])
+            self.save_last_folder()
+        except FileNotFoundError:
+            pass
+
 # File seletion
 class Selection():
     folder: FolderData

@@ -1,6 +1,6 @@
 from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor, HSVColorange
-from tools.art.Masking.mask import Mask
+from tools.art.mask import Mask
 
 class ImageMasker:
 	"""

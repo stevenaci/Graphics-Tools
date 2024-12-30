@@ -1,19 +1,14 @@
 import cv2 as cv
 import numpy as np
 from cv2.typing import MatLike
-
 from tools.art.colors.colors import HSVColorange
 
-from tools.art.colors.colors import HSVColorange
-from cv2.typing import MatLike
-
-from tools.art.colors.colors import HSVColorange
 
 class Mask:
 
 	res: MatLike  = 0
 
-	def __init__(self, img: MatLike, hsv_range: HSVColorange: HSVColorange):
+	def __init__(self, img: MatLike, hsv_range: HSVColorange):
 		self.create_mask(img, hsv_range)
 
 	def create_mask(self, hsv_img, r):

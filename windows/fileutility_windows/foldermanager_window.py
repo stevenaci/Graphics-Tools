@@ -25,10 +25,11 @@ class FolderManagerWindow(FolderManager):
     selection = None
     folderdata = {}
     
-    def __init__(self, path=None, previewwindow=None):
+    def __init__(self, path="/", previewwindow=None):
         FolderManager.__init__(self, path)
+        self.load_last_folder()
         if not self.selection.folder:
-            self.load_last_folder()
+            self.focus_folder('/')
         self.toolbar = FolderManagerToolbar()
         self.image_win = previewwindow
         self.windows = []
@@ -57,10 +58,8 @@ class FolderManagerWindow(FolderManager):
 
     DISPLAY_SIGNALS = (True, True)
     def show(self):
-        
         self.DISPLAY_SIGNALS = imgui.begin(self.label, self.DISPLAY_SIGNALS)
         self.clicked_toolbar(self.toolbar.show())
-        # print(len(self.selection.folder.contents))
         if self.selection.folder:
           self.clicked_folder(self.selection.folder.show())
         imgui.end()

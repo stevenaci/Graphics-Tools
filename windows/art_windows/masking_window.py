@@ -1,11 +1,11 @@
 import imgui
 from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
-from tools.art.Masking.masker import global_masker, ImageMasker, Mask
+from tools.art.masker import global_masker, ImageMasker, Mask
 from tools.filemanagement.savedata import save_state
 from tools.misc.update import Lazy
 
-from windows.art_windows.image_window import ImageWindow
+from windows.art_windows.image_viewer_window import ImageViewerWindow
 
 
 
@@ -20,7 +20,7 @@ class MaskWindow(Lazy):
     label = "Mask Window"
     img_path: str
     masks = []
-    image_win: ImageWindow
+    image_win: ImageViewerWindow
     hsv_img: CVImg
     select_color: HSVColor
     masker: ImageMasker
@@ -28,7 +28,7 @@ class MaskWindow(Lazy):
     hsv_input = 0, 0, 0
     selecting = False
 
-    def __init__(self, im_win: ImageWindow):
+    def __init__(self, im_win: ImageViewerWindow):
         self.hsv_img = CVImg()
         self.masker = global_masker
         self.image_win = im_win

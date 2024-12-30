@@ -1,10 +1,10 @@
 import imgui
 from tools.art.cv_image import CVImg
-from windows.art_windows.image_window import ImageWindow
+from windows.art_windows.image_viewer_window import ImageViewerWindow
 from windows.art_windows.arrange_window import ArrangeWindow
-from tools.art.Combining.combine import combine_images, combine_images_from_paths
+from tools.art.combine import combine_images, combine_images_from_paths
 from tools.art.drawplane import DrawPlane
-from tools.art.Masking.masker import global_masker, ImageMasker
+from tools.art.masker import global_masker, ImageMasker
 
 class CreateWindow():
     label = "Create window"
@@ -15,7 +15,7 @@ class CreateWindow():
     combine_masks = None
     masker: ImageMasker
 
-    def __init__(self, aw:ArrangeWindow=None, iw: ImageWindow=None):
+    def __init__(self, aw:ArrangeWindow=None, iw: ImageViewerWindow=None):
         self.aw= aw
         self.iw = iw
         self.masker = global_masker

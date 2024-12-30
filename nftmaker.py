@@ -1,17 +1,17 @@
 
 from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
-from windows.art_windows.image_window import ImageWindow
+from windows.art_windows.image_viewer_window import ImageViewerWindow
 from windows.fileutility_windows.selection_window import ArrangeSelectionWindow
 from windows.art_windows.arrange_window import ArrangeWindow
 from windows.art_windows.create_window import CreateWindow
-from Program import Program
+from program import Program
 
 class NFTWindows:
 
     @staticmethod
     def create():
         print("Generating windows for NFT")
-        im = ImageWindow( )
+        im = ImageViewerWindow( )
         fm = FolderManagerWindow("/", im)
         aw = ArrangeWindow()
         sw = ArrangeSelectionWindow(im, aw)
