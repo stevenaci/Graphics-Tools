@@ -62,7 +62,10 @@ class FolderManager():
     def load_last_folder(self):
         lastfolder = global_savedata.get('lastfolder')
         if lastfolder:
-            self.focus_folder(lastfolder)
+            try:
+                self.focus_folder(lastfolder)
+            except FileNotFoundError:
+                pass
 
     def save_last_folder(self):    
         global_savedata.update_data("lastfolder", self.selection.folder.path)
