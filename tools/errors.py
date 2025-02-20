@@ -1,6 +1,5 @@
-
 _ERROR_STR_ = "PROCESS FAILED:\n {} " 
-    
+
 def _error(error_msg):
     print(_ERROR_STR_.format(error_msg))
 

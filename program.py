@@ -5,7 +5,6 @@ import ctypes
 import OpenGL.GL as gl
 import imgui
 from imgui.integrations.sdl2 import SDL2Renderer
-from tools.filemanagement.savedata import global_savedata
 
 
 class Program:
@@ -48,7 +47,7 @@ class Program:
                         "Quit", 'Cmd+Q', False, True
                     )
                     if clicked_quit:
-                        exit(1)
+                        exit(0)
                     imgui.end_menu()
 
                 imgui.end_main_menu_bar()

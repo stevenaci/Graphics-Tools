@@ -10,20 +10,16 @@ def try_create_dir(path:str):
     except:
         print("\n{} already exists, we didn't create it. ".format(path) )
 
-
-try_create_dir("./savedata")
-try_create_dir("./output")
-
 class SaveData:
     disable_save = False
     data = {}
     def __init__(self, **kargs):
-        pass
+        try_create_dir("./savedata")
+        try_create_dir("./output")
 
     def save(self):
         if self.disable_save is False:
             pickle.dump(self.data, open(default_save_path,'wb'))
-        pass
 
     def update_data(self, key, val):
         self.data.update({key: val})
@@ -54,5 +50,3 @@ class SaveData:
 
 global_savedata = SaveData()
 global_savedata.load()
-
-save_state = SaveData() # Create "in-data store"

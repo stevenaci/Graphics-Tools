@@ -52,14 +52,12 @@ class ImageData:
         if self.texture:
             self.loaded = True
 
-    def set_width(self, w):
-        # Scale to the window
+    def scale_to_width(self, w):
         ratio = self.h / self.w
         self.w = int(w)
         self.h = int(w * ratio)
 
     def get_dimensions(self):
-        #self.load()
         return self.h, self.w
 
     def show(self):

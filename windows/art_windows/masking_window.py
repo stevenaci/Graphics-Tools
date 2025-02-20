@@ -2,7 +2,6 @@ import imgui
 from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
 from tools.art.masker import global_masker, ImageMasker, Mask
-from tools.filemanagement.savedata import save_state
 from tools.misc.update import Lazy
 
 from windows.art_windows.image_viewer_window import ImageViewerWindow
@@ -57,7 +56,6 @@ class MaskWindow(Lazy):
         )
 
     def gen_masks(self, colors: list[HSVColor]) -> list[Mask]:
-        save_state.update_data("mask_colors", colors)
         return self.masker.create_color_masks(self.masker.create_color_ranges(colors))
 
     def quant_masks(self) -> list[Mask]:
