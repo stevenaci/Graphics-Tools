@@ -10,3 +10,4 @@ savedata/
 venv/
 *.swp
 output/
+imgui.ini

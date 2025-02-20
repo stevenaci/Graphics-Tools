@@ -1,7 +1,7 @@
 from program import Program
-from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
-from windows.art_windows.image_viewer_window import ImageViewerWindow
-from windows.art_windows.masking_window import MaskWindow
+from windows.foldermanager_window import FolderManagerWindow
+from windows.image_viewer_window import ImageViewerWindow
+from windows.masking_window import MaskWindow
 
 class PrintWindows:
 

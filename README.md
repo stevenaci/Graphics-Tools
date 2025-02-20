@@ -1,4 +1,4 @@
-# ReversePrint
+# image-deconstructor
 
 ### GUI library: [imgui](https://pyimgui.readthedocs.io/en/latest/)
 
@@ -9,7 +9,8 @@ Now that's achieved, I am focusing on creating an auto-masking/color isolation t
 which can cleanly separate an 'additive print' artwork into its original parts.
 Examples: Japanese woodblock prints, screen prints.
 
-Check out the algo in the code, it is 'decent' so far but has some fragmentation.
+Check out the algo in the code, it is 'decent' so far but has some issues.
+todo: blurring blending, defragmentation
 At some point I may write up a proper explanation.
 I can't for the life of me pick a good name.
 
