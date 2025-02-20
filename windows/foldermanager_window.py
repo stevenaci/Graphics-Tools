@@ -1,9 +1,9 @@
 import imgui
 import os
-from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData
+from tools.filemanagement.filemanagement import FolderManager, FolderItem
 from enum import Enum
 
-from windows.art_windows.image_viewer_window import ImageViewerWindow
+from windows.image_viewer_window import ImageViewerWindow
 
 class FolderManagerToolbar():
     selected = ""

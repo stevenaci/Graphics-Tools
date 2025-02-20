@@ -4,7 +4,7 @@ from tools.art.colors.colors import HSVColor
 from tools.art.masker import global_masker, ImageMasker, Mask
 from tools.misc.update import Lazy
 
-from windows.art_windows.image_viewer_window import ImageViewerWindow
+from windows.image_viewer_window import ImageViewerWindow
 
 
 
