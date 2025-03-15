@@ -8,4 +8,6 @@ dist/
 *.pyc
 savedata/
 venv/
+*.swp
 output/
+imgui.ini

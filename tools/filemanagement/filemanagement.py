@@ -56,6 +56,7 @@ class Folder():
             print(f"Lacking permissions {e.filename}")
 
 class FolderManager():
+    folderdata: dict[str, FolderData]
     def __init__(self, path=None):
         self.selection = Selection()
         if path:
@@ -64,11 +65,8 @@ class FolderManager():
     def load_last_folder(self):
         lastfolder = global_savedata.get('lastfolder')
         if lastfolder:
-            try:
-                self.focus_folder(lastfolder)
-            except FileNotFoundError:
-                pass
-
+            self.focus_folder(lastfolder)
+            
     def save_last_folder(self):    
         global_savedata.update_data("lastfolder", self.selection.folder.path)
         global_savedata.save() # save out

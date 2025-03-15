@@ -1,29 +1,15 @@
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 import os
 os.environ["PYSDL2_DLL_PATH"] = "./"
-
 from sdl2 import *
-import sdl2.ext
-import sdl2.ext.particles
-
 import ctypes
 import OpenGL.GL as gl
-
 import imgui
 from imgui.integrations.sdl2 import SDL2Renderer
 
-from tools.filemanagement.savedata import global_savedata
-
-def to_path(p:str):
-    return p.replace('\\','/') 
 
 class Program:
 
     windows = []
-
-    def __init__(self):
-        pass
     
     def load_windows(self, wins):
         self.windows = wins
@@ -44,7 +30,6 @@ class Program:
         running = True
         event = SDL_Event()
 
-        #cm.load_images()
         while running:
             while SDL_PollEvent(ctypes.byref(event)) != 0:
                 if event.type == SDL_QUIT:
@@ -62,7 +47,7 @@ class Program:
                         "Quit", 'Cmd+Q', False, True
                     )
                     if clicked_quit:
-                        exit(1)
+                        exit(0)
                     imgui.end_menu()
 
                 imgui.end_main_menu_bar()
