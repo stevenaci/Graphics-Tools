@@ -1,6 +1,6 @@
 import imgui
 import os
-from tools.filemanagement.filemanagement import FolderManager, FolderItem, FolderData
+from tools.filemanagement.filemanagement import FolderManager, File, Folder
 from enum import Enum
 
 class FolderManagerToolbar():
@@ -44,7 +44,7 @@ class FolderManagerWindow(FolderManager):
             if signal == FolderManagerToolbar.Signals.BTN_NEW_WINDOW:
                 self.open_new_window(self.selection.folder.path)
 
-    def clicked_folder(self, folder: FolderItem=None):
+    def clicked_folder(self, folder: File=None):
         if folder is not None:
             if folder.is_dir:
                 self.focus_folder(folder.path)

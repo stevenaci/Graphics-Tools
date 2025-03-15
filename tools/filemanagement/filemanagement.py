@@ -2,9 +2,11 @@ import imgui
 import os
 from .savedata import global_savedata
 
+
+
 DIR_ITEM_ENTER = 1
 
-class FolderItem():
+class File():
 # An Item in the file system
     path: str = None
     entry: os.DirEntry = None
@@ -31,27 +33,27 @@ class FolderItem():
             return DIR_ITEM_ENTER
 
 # A folder representation
-class FolderData():
+class Folder():
     path = None
-    contents: dict[str, FolderItem]={} # FolderItems
+    contents: dict[str, File]={} # FolderItems
 
     def __init__(self, path:str) -> None:
         self.path = path
-        self.scan()
-
-    def scan(self) -> None:
-        # refresh contents of directory
-        self.contents = dict()
-        try:
-            for e in os.scandir(self.path): # e : os dir entry
-                self.contents[e.path] = FolderItem(e)
-        except PermissionError:
-            print()
+        self.contents = self.scan(self.path)
 
     def show(self):
         for k, v in self.contents.items():
             if v.show():
                 return v
+    def scan(self, path: str) -> None:
+        # refresh contents of directory
+        contents = dict()
+        try:
+            [ contents.update({e.path: File(e)}) for e in os.scandir(self.path)]
+            return contents      
+
+        except PermissionError as e:
+            print(f"Lacking permissions {e.filename}")
 
 class FolderManager():
     def __init__(self, path=None):
@@ -73,7 +75,7 @@ class FolderManager():
 
     def focus_folder(self, path):
         if path not in self.folderdata.keys():
-            self.folderdata[path] = FolderData(path)
+            self.folderdata[path] = Folder(path)
         else:
             self.folderdata[path].scan()
         self.selection.set_folder(self.folderdata[path])
@@ -81,9 +83,9 @@ class FolderManager():
         
 # File seletion
 class Selection():
-    folder: FolderData
+    folder: Folder
     def __init__(self) -> None:
         self.folder = None
     
-    def set_folder(self, f: FolderData):
+    def set_folder(self, f: Folder):
         self.folder = f

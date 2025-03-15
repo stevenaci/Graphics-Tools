@@ -43,7 +43,7 @@ class ImageData:
         try:
             if not self.loaded:
                 self.texture, self.w, self.h = load_image(self.path) # Loads the image
-            # self.set_width(500)
+
         except:
             print("Couldn't Load", os.path.abspath(str(self.path)))
             self.failed = True
@@ -59,7 +59,6 @@ class ImageData:
         self.h = int(w * ratio)
 
     def get_dimensions(self):
-        #self.load()
         return self.h, self.w
 
     def show(self):

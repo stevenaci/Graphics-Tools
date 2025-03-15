@@ -1,4 +1,5 @@
 
+from tools.misc.progressbar import InfiniteProgressBar
 from windows.art_windows.arrange_window import ArrangeWindow
 from windows.fileutility_windows.foldermanager_window import FolderManagerWindow
 from windows.art_windows.image_window import ImageWindow
@@ -18,6 +19,7 @@ class PrintWindows:
         aw = ArrangeWindow()
         cw = CreateWindow(aw=aw, iw=im)
         sw = ArrangeSelectionWindow(im, aw)
+
         return [aw, fm, im, ma, cw, sw]
 
 class PrintMaker(Program):

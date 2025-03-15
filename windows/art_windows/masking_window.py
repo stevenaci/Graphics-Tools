@@ -3,6 +3,7 @@ from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor
 from tools.art.Masking.masker import global_masker, ImageMasker, Mask
 from tools.filemanagement.savedata import save_state
+from tools.misc.progressbar import InfiniteProgressBar
 from tools.misc.update import Lazy
 
 from windows.art_windows.image_window import ImageWindow
@@ -27,6 +28,7 @@ class MaskWindow(Lazy):
     btn_add_color = False
     hsv_input = 0, 0, 0
     selecting = False
+    progress_bar = InfiniteProgressBar()
 
     def __init__(self, im_win: ImageWindow):
         self.hsv_img = CVImg()
@@ -93,5 +95,7 @@ class MaskWindow(Lazy):
         if self.btn_color_quant:
             self.masks = self.quant_masks()
             self.masker.save_masks(self.masks)
+        self.progress_bar.update_progress()
+        self.progress_bar.show()
         imgui.end()
         return
