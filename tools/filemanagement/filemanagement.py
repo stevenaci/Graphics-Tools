@@ -56,7 +56,7 @@ class Folder():
             print(f"Lacking permissions {e.filename}")
 
 class FolderManager():
-    folderdata: dict[str, FolderData]
+    folders: dict[str, Folder]
     def __init__(self, path=None):
         self.selection = Selection()
         if path:
@@ -69,14 +69,14 @@ class FolderManager():
             
     def save_last_folder(self):    
         global_savedata.update_data("lastfolder", self.selection.folder.path)
-        global_savedata.save() # save out
+        global_savedata.save()
 
     def focus_folder(self, path):
-        if path not in self.folderdata.keys():
-            self.folderdata[path] = Folder(path)
+        if path not in self.folders.keys():
+            self.folders[path] = Folder(path)
         else:
-            self.folderdata[path].scan()
-        self.selection.set_folder(self.folderdata[path])
+            self.folders[path].scan()
+        self.selection.set_folder(self.folders[path])
         self.save_last_folder()
         
 # File seletion

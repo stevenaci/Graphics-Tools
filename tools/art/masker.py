@@ -33,4 +33,4 @@ class ImageMasker:
 			Mask.combine([m.res for m in masks]), "{}_{}.jpg".format(time.time(), "full")
 		)
 
-global_masker = ImageMasker()
+image_masker = ImageMasker()

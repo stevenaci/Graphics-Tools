@@ -1,7 +1,7 @@
 from program import Program
-from windows.foldermanager_window import FolderManagerWindow
+from windows.folder_manager_window import FolderManagerWindow
 from windows.image_viewer_window import ImageViewerWindow
-from windows.masking_window import MaskWindow
+from windows.printmaker import PrintMakerWindow
 
 class PrintWindows:
 
@@ -10,10 +10,10 @@ class PrintWindows:
         print("Generating windows for Printmaker Program.")
         im = ImageViewerWindow()
         fm = FolderManagerWindow(None, im)
-        ma = MaskWindow(im)
+        ma = PrintMakerWindow(im)
         return [fm, im, ma]
 
-class PrintMaker(Program):
+class PrintMakerWindow(Program):
 
     def __init__(self):
         super(Program, self).__init__()
@@ -23,5 +23,5 @@ class PrintMaker(Program):
 
 if __name__ == "__main__":
 
-    program = PrintMaker()
+    program = PrintMakerWindow()
     program.main()
