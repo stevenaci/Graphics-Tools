@@ -10,7 +10,6 @@ class Positioned():
     
     def set_x(self, x):
         self.x = x
-        
     def set_y(self, y):
         self.y = y
     def set_w(self, w):

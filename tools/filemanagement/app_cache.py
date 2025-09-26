@@ -3,14 +3,13 @@ import os
 
 default_save_path= "./savedata/savedata.p"
 
-# try to create a dir
 def try_create_dir(path:str):
     try:
         os.mkdir(path)
     except:
         print("\n{} already exists, we didn't create it. ".format(path) )
 
-class SaveData:
+class AppCache:
     disable_save = False
     data = {}
     def __init__(self, **kargs):
@@ -48,5 +47,5 @@ class SaveData:
     def disable_saving(self):
         self.disable_save = True
 
-global_savedata = SaveData()
+global_savedata = AppCache()
 global_savedata.load()

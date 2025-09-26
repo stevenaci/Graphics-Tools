@@ -5,22 +5,9 @@ import ctypes
 import OpenGL.GL as gl
 import imgui
 from imgui.integrations.sdl2 import SDL2Renderer
-
+from window import gt_window
 
 class Program:
-
-    windows = []
-    
-    def load_windows(self, wins):
-        self.windows = wins
-
-    def display_window(self):
-
-        imgui.begin_group()
-        for win in self.windows:
-            if win.show() == False:
-                self.windows.remove(win)
-        imgui.end_group()
 
     def main(self):
         window, gl_context = self.impl_pysdl2_init()
@@ -49,14 +36,14 @@ class Program:
                     if clicked_quit:
                         exit(0)
                     imgui.end_menu()
-
                 imgui.end_main_menu_bar()
 
             #flags = imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_MOVE
             flags = imgui.WINDOW_ALWAYS_AUTO_RESIZE
-            self.display_window()
             gl.glClearColor(0.3, 0.7, 1, 1)
             gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+            
+            gt_window.window_manager.display_windows()
             imgui.render()
             impl.render(imgui.get_draw_data())
             SDL_GL_SwapWindow(window)

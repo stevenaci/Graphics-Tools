@@ -18,22 +18,14 @@ def load_image(filename='test.png'):
 
     return texture_id, width, height
 
-
 class ImageData:
     """
     # An Image, loaded as a gl texture, able to be rendered in imgui with show()
     # 
     # """
-
     texture: int
-    #surface: Image.Surface
-    img_ID_counter: int = 0000
-    imgID: int
 
     def __init__(self, path):
-        global img_ID_counter
-        ImageData.img_ID_counter += 1
-        self.imgID = ImageData.img_ID_counter
 
         self.path = path
         self.loaded = False

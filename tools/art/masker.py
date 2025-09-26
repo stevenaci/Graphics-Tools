@@ -1,6 +1,8 @@
 from tools.art.cv_image import CVImg
 from tools.art.colors.colors import HSVColor, HSVColorange
 from tools.art.mask import Mask
+from window import gt_window
+from window.image_viewer_window import ImageViewerWindow
 
 class ImageMasker:
 	"""
@@ -20,17 +22,26 @@ class ImageMasker:
 	# Creates a new pixel mask for each color
 	def create_color_masks(self, color_ranges: list[HSVColorange], img: CVImg) -> list[Mask]:
 		return [Mask(img.data, c) for c in color_ranges]
-
-	def save_masks(self, masks: list[Mask])->bool:
+	def timestamped(x: str):
 		import time
+		return "{}_{}".format(time.time(), x)
+	
+	def save_masks(self, masks: list[Mask])->bool:
+		
 		# save all masks
+		saved_files: list[str] = []
 		for i, mask in enumerate(masks):
+			saved_files.append("{}.jpg".format(ImageMasker.timestamped(str(i))))
 			CVImg.save(
-				mask.res, "{}_{}.jpg".format(time.time(), str(i))
-			)
+				mask.res, saved_files[-1])
+			
 		# save the combined mask
 		CVImg.save(
-			Mask.combine([m.res for m in masks]), "{}_{}.jpg".format(time.time(), "full")
+			Mask.combine([m.res for m in masks]), "{}.jpg".format(ImageMasker.timestamped("full"))
 		)
+		gt_window.window_manager.windows.append(
+			ImageViewerWindow(saved_files[-1])
+		)
+
 
 global_masker = ImageMasker()

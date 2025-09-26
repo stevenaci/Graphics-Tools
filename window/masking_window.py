@@ -4,8 +4,8 @@ from tools.art.colors.colors import HSVColor
 from tools.art.masker import global_masker, ImageMasker, Mask
 from tools.misc.update import Lazy
 
-from windows.image_viewer_window import ImageViewerWindow
-
+from window import gt_window
+from window.image_viewer_window import ImageViewerWindow
 
 
 class MaskWindow(Lazy):
@@ -78,14 +78,7 @@ class MaskWindow(Lazy):
         if imgui.is_mouse_down() and self.selecting:
             self.select_pixel()
             self.add_current_color()
-            self.selecting = False
-
-        self.btn_gen_masks = imgui.button("Gen Masks")
-        if self.btn_gen_masks:
-            self.gen_masks()
-        self.btn_save_masks = imgui.button("Save Masks")
-        if self.btn_save_masks:
-            self.masker.save_masks()
+            self.selecting = False    
         # Separate components.
         self.btn_color_quant = imgui.button("Color Quantize Mask")
         if self.btn_color_quant:

@@ -15,9 +15,10 @@ class ImageViewerWindow(Lazy):
     mask_window = None
     fill_type: str = "fullsize"
 
-    def __init__(self):
+    def __init__(self, path=None):
         super().__init__()
-        pass
+        if path:
+            self.replace_image(path)
 
     def replace_image(self, path:str):
         self.img = iu.ImageData(path)

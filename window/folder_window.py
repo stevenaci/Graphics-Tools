@@ -1,11 +1,10 @@
+from enum import Enum
 import imgui
 import os
 from tools.filemanagement.filemanagement import FolderManager, FolderItem
-from enum import Enum
+from window.image_viewer_window import ImageViewerWindow
 
-from windows.image_viewer_window import ImageViewerWindow
-
-class FolderManagerToolbar():
+class FolderToolbar():
     selected = ""
 
     class Signals(Enum):
@@ -16,7 +15,7 @@ class FolderManagerToolbar():
         if imgui.button("Go up"):
             return self.Signals.BTN_UP_FOLDER
 
-class FolderManagerWindow(FolderManager):
+class FolderWindow(FolderManager):
 
     label = "Folder looker"
 
@@ -29,19 +28,19 @@ class FolderManagerWindow(FolderManager):
         self.load_last_folder()
         if not self.selection.folder:
             self.focus_folder('/')
-        self.toolbar = FolderManagerToolbar()
+        self.toolbar = FolderToolbar()
         self.image_win = image_window
         self.windows = []
         self.window_signals = (True, True)
 
     def clicked_toolbar(self, signal:int=None):
         if signal is not None:
-            if signal == FolderManagerToolbar.Signals.BTN_UP_FOLDER:
+            if signal == FolderToolbar.Signals.BTN_UP_FOLDER:
                 if self.selection.folder:
                     self.focus_folder(os.path.dirname(self.selection.folder.path))
                 else:
                     self.focus_folder(os.getcwd())
-            if signal == FolderManagerToolbar.Signals.BTN_NEW_WINDOW:
+            if signal == FolderToolbar.Signals.BTN_NEW_WINDOW:
                 self.open_new_window(self.selection.folder.path)
 
     def clicked_folder(self, folder: FolderItem=None):
@@ -53,7 +52,7 @@ class FolderManagerWindow(FolderManager):
 
 
     def open_new_window(self, path):
-        self.windows.append(FolderManagerWindow(path, self.image_win))
+        self.windows.append(FolderWindow(path, self.image_win))
 
     def show(self):
         self.window_signals = imgui.begin(self.label, self.window_signals)

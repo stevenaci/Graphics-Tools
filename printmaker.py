@@ -1,15 +1,15 @@
 from program import Program
-from windows.foldermanager_window import FolderManagerWindow
-from windows.image_viewer_window import ImageViewerWindow
-from windows.masking_window import MaskWindow
+from window import gt_window
+from window.folder_window import FolderWindow
+from window.image_viewer_window import ImageViewerWindow
+from window.masking_window import MaskWindow
 
 class PrintWindows:
 
     @staticmethod
     def create_windows():
-        print("Generating windows for Printmaker Program.")
         im = ImageViewerWindow()
-        fm = FolderManagerWindow(None, im)
+        fm = FolderWindow(None, im)
         ma = MaskWindow(im)
         return [fm, im, ma]
 
@@ -17,9 +17,8 @@ class PrintMaker(Program):
 
     def __init__(self):
         super(Program, self).__init__()
-        self.load_windows(
-            PrintWindows.create_windows()
-        )
+        gt_window.window_manager.windows = PrintWindows.create_windows()
+        
 
 if __name__ == "__main__":
 

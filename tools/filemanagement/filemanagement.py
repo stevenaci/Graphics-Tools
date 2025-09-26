@@ -1,6 +1,6 @@
 import imgui
 import os
-from .savedata import global_savedata
+from .app_cache import global_savedata
 
 DIR_ITEM_ENTER = 1
 
