@@ -31,7 +31,7 @@ class HSVColorange:
         Setting this higher extends the lower bound for the
         saturation and value. If your image is noisy or low-quality this
         may result in a smoother mask."""
-    h_pass = 28
+    h_pass = 255/5
     s_pass = 5
     v_pass = 5
 
@@ -41,9 +41,6 @@ class HSVColorange:
         self.low = np.array(
             [clamp(c[0]- self.h_pass,0,255),
             c[1],
-            #c[1] - self.s_pass,
-            c[2]
-            
-            ])
-        self.hi = np.array(
-            [clamp(c[0]+self.h_pass,0,255), 255, 255])
+            c[2]            
+        ])
+        self.hi = np.array([clamp(c[0]+self.h_pass,0,255), 255, 255])
