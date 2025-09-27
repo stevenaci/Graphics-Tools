@@ -2,9 +2,11 @@ import imgui
 import os
 from .app_cache import global_savedata
 
+
+
 DIR_ITEM_ENTER = 1
 
-class FolderItem():
+class File():
 # An Item in the file system
     path: str = None
     entry: os.DirEntry = None
@@ -31,30 +33,30 @@ class FolderItem():
             return DIR_ITEM_ENTER
 
 # A folder representation
-class FolderData():
+class Folder():
     path = None
-    contents: dict[str, FolderItem]={} # FolderItems
+    contents: dict[str, File]={} # FolderItems
 
     def __init__(self, path:str) -> None:
         self.path = path
-        self.scan()
-
-    def scan(self) -> None:
-        # refresh contents of directory
-        self.contents = dict()
-        try:
-            for e in os.scandir(self.path): # e : os dir entry
-                self.contents[e.path] = FolderItem(e)
-        except:
-            print("Folder not accessible")
+        self.contents = self.scan(self.path)
 
     def show(self):
         for k, v in self.contents.items():
             if v.show():
                 return v
+    def scan(self, path: str) -> None:
+        # refresh contents of directory
+        contents = dict()
+        try:
+            [ contents.update({e.path: File(e)}) for e in os.scandir(self.path)]
+            return contents      
+
+        except PermissionError as e:
+            print(f"Lacking permissions {e.filename}")
 
 class FolderManager():
-    folderdata: dict[str, FolderData]
+    folders: dict[str, Folder]
     def __init__(self, path=None):
         self.selection = Selection()
         if path:
@@ -67,24 +69,21 @@ class FolderManager():
             
     def save_last_folder(self):    
         global_savedata.update_data("lastfolder", self.selection.folder.path)
-        global_savedata.save() # save out
+        global_savedata.save()
 
     def focus_folder(self, path):
-        try:
-            if path not in self.folderdata.keys():
-                self.folderdata[path] = FolderData(path)
-            else:
-                self.folderdata[path].scan()
-            self.selection.set_folder(self.folderdata[path])
-            self.save_last_folder()
-        except FileNotFoundError:
-            pass
-
+        if path not in self.folders.keys():
+            self.folders[path] = Folder(path)
+        else:
+            self.folders[path].scan()
+        self.selection.set_folder(self.folders[path])
+        self.save_last_folder()
+        
 # File seletion
 class Selection():
-    folder: FolderData
+    folder: Folder
     def __init__(self) -> None:
         self.folder = None
     
-    def set_folder(self, f: FolderData):
+    def set_folder(self, f: Folder):
         self.folder = f

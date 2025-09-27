@@ -13,7 +13,7 @@ class PrintWindows:
         ma = MaskWindow(im)
         return [fm, im, ma]
 
-class PrintMaker(Program):
+class PrintMakerWindow(Program):
 
     def __init__(self):
         super(Program, self).__init__()
@@ -22,5 +22,5 @@ class PrintMaker(Program):
 
 if __name__ == "__main__":
 
-    program = PrintMaker()
+    program = PrintMakerWindow()
     program.main()

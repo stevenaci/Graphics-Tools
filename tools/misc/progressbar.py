@@ -1,34 +1,42 @@
 import imgui
-
+import numpy as np
 class ProgressBar():
-
-    p_done = 0.0
-    slice_sz = 22
-    sz = 100.0
+    progress = 0.0
+    slice_sz = 2
+    height = 10
 
     def __init__(self, progress=0.0):
-        self.p_done = progress
+        self.progress = progress
 
+    def update_progress(self, p = 0.001):
+        self.progress = min(self.progress + p, 1)
 
-    def update(self, p = 0.001):
+    def update_relative(self):
+        w_pos = imgui.get_window_position()
+        self.xy = imgui.get_cursor_position()
         
-        self.p_done = min(self.p_done + p, 100)
+        self.xy = imgui.Vec2(self.xy.x + w_pos.x, self.xy.y + w_pos.y) 
+        self.height = imgui.get_text_line_height()
+        self.width = imgui.get_window_width() # Line width
+        self.slice_sz = 2 # Glyph width
 
-    def update_position(self):
-        # ALL CALLBACK
-        self.xy = imgui.get_window_position()
     def show(self):
-        draw_list = imgui.get_window_draw_list()
-        self.update_position()
-        slices = int(self.sz / self.slice_sz)
-
+        self.draw_list = imgui.get_window_draw_list()
+        self.update_relative()
+        slices = int((self.width / self.slice_sz) * self.progress)
         for s in range(slices):
-            if s % 2:
-                x = s * self.slice_sz
-                draw_list.add_rect_filled(
-                    x + self.xy.x,
-                    self.xy.y, x + self.slice_sz,
-                    x +self.slice_sz,
-                    imgui.get_color_u32_rgba(0.0, 0.0, 1.0, 1.0)
-                )
+            slice_x, slice_y = (s * self.slice_sz) + self.xy.x , self.xy.y
 
+            self.draw_list.add_rect_filled(
+                slice_x,
+                slice_y, 
+                slice_x + self.slice_sz,
+                slice_y + self.height,
+                imgui.get_color_u32_rgba(0.0, 0.0, 1.0, 1.0) if s % 2 else imgui.get_color_u32_rgba(0.0, 0.8, 0.3, 1.0)
+            )
+
+class InfiniteProgressBar(ProgressBar):
+    def update_progress(self, p = 0.001):
+        ProgressBar.update_progress(self)
+        if self.progress == 1:
+            self.progress = 0
