@@ -1,21 +1,14 @@
 import imgui
 from tools.art.cv_image import CVImg
-from tools.art.colors.colors import HSVColor
+from tools.art.masker import ImageMasker
 from tools.filemanagement.filemanagement import Folder
-from tools.filemanagement.savedata import save_state
-from tools.misc.progressbar import InfiniteProgressBar
-from tools.art.masker import image_masker, ImageMasker, Mask
 from tools.misc.update import Lazy
 
-from windows.image_viewer_window import ImageViewerWindow
+from .image_viewer_window import ImageViewerWindow
 
-class PrintMakerWindow(Lazy):
+class PrintWindow(Lazy):
     """
     Window with masking functionality
-    Inputs
-    - image
-    - hsv color
-    - outputs a mask of that color range, able to be saved.
     """
     label = "Mask Window"
     img_path: str
@@ -27,6 +20,7 @@ class PrintMakerWindow(Lazy):
         self.image_win = im_win
         self.colors = []
         im_win.add_subscriber(self)
+        self.masker = ImageMasker()
 
     def update(self):
         if self.image_win.img:
@@ -35,7 +29,12 @@ class PrintMakerWindow(Lazy):
 
     def quant_and_save_masks(self, img: CVImg):
         _img, colors = img.color_quantize(3)
-        return self.masker.create_color_masks(image_masker.create_color_ranges(colors), img=_img)
+        self.masker.save_masks(
+            self.masker.create_color_masks(
+                self.masker.create_color_ranges(colors), img=_img
+            ),
+            img.filename
+        )
 
     def quant_all_proofs(self):
         import os
@@ -52,6 +51,6 @@ class PrintMakerWindow(Lazy):
 
         btn_proofs = imgui.button("Quantize all proofs")
         if btn_proofs:
-            self.quant_and_save_masks(self.hsv_img)
+            self.quant_all_proofs()
 
         imgui.end()

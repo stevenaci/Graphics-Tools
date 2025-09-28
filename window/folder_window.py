@@ -1,15 +1,8 @@
 from enum import Enum
 import imgui
 import os
-<<<<<<< HEAD:window/folder_window.py
-from tools.filemanagement.filemanagement import FolderManager, FolderItem
+from tools.filemanagement.filemanagement import FolderManager, File
 from window.image_viewer_window import ImageViewerWindow
-=======
-from tools.filemanagement.filemanagement import FolderManager, File, Folder
-from enum import Enum
-
-from windows.image_viewer_window import ImageViewerWindow
->>>>>>> origin/master:window/folder_manager_window.py
 
 class FolderToolbar():
     selected = ""

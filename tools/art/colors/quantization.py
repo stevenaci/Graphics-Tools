@@ -43,7 +43,6 @@ class Quantization():
         # reshape the feature vectors to images
         quant = quant.reshape((h, w, 3))
         self.data = self.data.reshape((h, w, 3))
-        # convert from L*a*b* to RGB
 
         quant = cv2.cvtColor(cv2.cvtColor(quant, cv2.COLOR_LAB2BGR),
             cv2.COLOR_BGR2HSV)

@@ -11,11 +11,12 @@ class Mask:
 	def __init__(self, img: MatLike, hsv_range: HSVColorange):
 		self.create_mask(img, hsv_range)
 
-	def create_mask(self, hsv_img, r):
+	def create_mask(self, hsv_img, r: HSVColorange):
 		self.res = cv.bitwise_and(
 			hsv_img.obj, hsv_img.obj, 
 			mask=cv.inRange(hsv_img.obj, r.low, r.hi)
 		)
+		self.hsv = r
 		self.res = cv.cvtColor(self.res, cv.COLOR_HSV2BGR)
 
 	def combine(mats: list[MatLike]):

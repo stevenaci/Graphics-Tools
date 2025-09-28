@@ -26,15 +26,14 @@ class ImageMasker:
 		import time
 		return "{}_{}".format(time.time(), x)
 	
-	def save_masks(self, masks: list[Mask])->bool:
+	# save all masks generated from a file
+	def save_masks(self, masks: list[Mask], filename)->bool:
 		
-		# save all masks
 		saved_files: list[str] = []
 		for i, mask in enumerate(masks):
-			saved_files.append("{}.jpg".format(ImageMasker.timestamped(str(i))))
-			CVImg.save(
-				mask.res, saved_files[-1])
-			
+			saved_files.append("{}-{}.jpg".format(filename, mask.hsv.hi[0]))
+			CVImg.save(mask.res, saved_files[-1])
+
 		# save the combined mask
 		CVImg.save(
 			Mask.combine([m.res for m in masks]), "{}.jpg".format(ImageMasker.timestamped("full"))

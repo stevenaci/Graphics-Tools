@@ -31,7 +31,7 @@ class HSVColorange:
         Setting this higher extends the lower bound for the
         saturation and value. If your image is noisy or low-quality this
         may result in a smoother mask."""
-    h_pass = 255/5
+    h_pass = 255
     s_pass = 5
     v_pass = 5
 

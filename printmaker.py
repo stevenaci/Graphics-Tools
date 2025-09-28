@@ -2,7 +2,7 @@ from program import Program
 from window import gt_window
 from window.folder_window import FolderWindow
 from window.image_viewer_window import ImageViewerWindow
-from window.masking_window import MaskWindow
+from window.print_window import PrintWindow
 
 class PrintWindows:
 
@@ -10,7 +10,7 @@ class PrintWindows:
     def create_windows():
         im = ImageViewerWindow()
         fm = FolderWindow(None, im)
-        ma = MaskWindow(im)
+        ma = PrintWindow(im)
         return [fm, im, ma]
 
 class PrintMakerWindow(Program):

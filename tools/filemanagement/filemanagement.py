@@ -58,6 +58,7 @@ class Folder():
 class FolderManager():
     folders: dict[str, Folder]
     def __init__(self, path=None):
+        self.folders = {}
         self.selection = Selection()
         if path:
             self.focus_folder(path)
